@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomePage {
 
+ weatherLocal: any;
+
   constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient) {
 
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -18,6 +20,7 @@ export class HomePage {
        console.log(apiCall);
        this.http.get(apiCall).subscribe((response) => {
          console.log(response);
+         this.weatherLocal = response.main.temp - 273.15;
       });
       }).catch((error) => {
         console.log('Error getting location', error);
