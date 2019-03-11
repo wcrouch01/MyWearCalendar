@@ -1,0 +1,39 @@
+<ion-content padding>
+<h1>Set Settings</h1>
+<br>
+<ion-list style="width: 85%;margin: auto;" radio-group [(ngModel)]="gender">
+  <ion-label>Gender</ion-label>
+    <ion-item>
+        <ion-label>Male</ion-label>
+        <ion-radio value="1"></ion-radio>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Female</ion-label>
+        <ion-radio value="2" ></ion-radio>
+    </ion-item>
+<br>
+<br>
+  <ion-row class="colorselect color_{{color.slice(1,7)}}">
+    <ion-item>
+      <ion-label class="primarylabel">Skin Color</ion-label>
+      <ion-select (click)="prepareColorSelector()" (ionChange)="setColor(this.color)" [(ngModel)]="color">
+        <ion-option (ionSelect)="selectColor(optioncolor)" *ngFor="let optioncolor of colors" [value]="optioncolor">{{optioncolor}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-row>
+
+<br>
+<br>
+
+  <ion-item>
+    <ion-label >Notficiations</ion-label>
+    <ion-toggle [(ngModel)]="notifications"></ion-toggle>
+  </ion-item>
+
+  <br>
+  <br>
+  <button ion-button color="success" (click)="submit()">Submit</button>
+</ion-list>
+
+</ion-content>

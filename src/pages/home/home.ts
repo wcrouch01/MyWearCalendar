@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClient } from '@angular/common/http';
-import {Platform} from 'ionic-angular';
+import { Platform } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { SettingsSetPage } from '../settings-set/settings-set';
 
 interface apiResponse {
     coord: any,
@@ -26,36 +28,15 @@ export class HomePage {
 
  weatherLocal: any;
 
-  constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient, private platform: Platform) {
-/*
-    var options = {
-      enableHighAccuracy: true,
-      timeout: 5000
-    };
+  constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient,
+    private platform: Platform, private storage: Storage ) {
 
-   this.platform.ready().then(() => {
-        console.log("PLATFORM READY IN PROVIDER")
-
-                this.geolocation.getCurrentPosition().then((resp) => {
-                   console.log(resp.coords.latitude);
-                   console.log(resp.coords.longitude);
-                  // var apiCall = "http://api.openweathermap.org/data/2.5/weather?lat="+resp.coords.latitude+"&lon="+resp.coords.longitude+"&APPID=664bfb683ddf553092f072ef0a65abcf"
-                  // console.log(apiCall);
-                  //   this.http.get<apiResponse>(apiCall).subscribe((response) => {
-                  //     console.log(response);
-
-                  //     this.weatherLocal = response.main.temp - 273.15;
-                  //  }, err => {
-                //  this.weatherLocal = err;
-                //  });
-                  }).catch((error) => {
-                    console.log('Error getting location', error.message);
-                  });
-    })
-      */
-
-
-
+    this.storage.get('gender').then((val) => {
+    console.log('Your gender is', val);
+    if (val == null) {
+      this.navCtrl.push(SettingsSetPage);
+    }
+    });
   }
 
   ionViewDidEnter(){

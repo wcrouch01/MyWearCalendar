@@ -1,9 +1,22 @@
 <ion-content>
   <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-start></ion-icon>
-      @ionicframework
+    <ion-list-header>Gender</ion-list-header>
+    <ion-item *ngIf="gender == 1">
+      Male
+    </ion-item>
+    <ion-item *ngIf="gender != 1">
+      Female
     </ion-item>
   </ion-list>
+
+  <ion-list-header>Skin Color</ion-list-header>
+  <div [ngStyle]="{'background-color': color}" class="select-text">
+
+  </div>
+
+  <ion-list-header>Notficiations</ion-list-header>
+  <ion-item>
+    {{notifications}}
+  </ion-item>
+
 </ion-content>
