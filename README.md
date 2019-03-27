@@ -1,6 +1,6 @@
 # MyWearCalendar
 
-Test in a web browser:
+Test in a web browser: (This is not the intended platform but should be used to test some device independent features)
       
       git clone <repo name>
 
