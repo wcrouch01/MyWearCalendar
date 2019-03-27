@@ -1,26 +1,28 @@
 # MyWearCalendar
 
 Test in a web browser:
-  git clone <repo name>
+      
+      git clone <repo name>
+
+      cd into new repo
   
-  cd into new repo
+      npm install
   
-  npm install
-  
-  ionic serve (assuming you have ionic cli downloaded)
+      ionic serve (assuming you have ionic cli downloaded)
   
 Test for IOS device:
-  git clone <repo name>
   
-  cd into new repo
+    git clone <repo name>
   
-  npm install
+    cd into new repo
   
-  ionic cordova build ios
+    npm install
   
-  open project in Xcode
+    ionic cordova build ios
   
-  select emulator
+    open project in Xcode
   
-  build project
+    select emulator
+  
+    build project
   
