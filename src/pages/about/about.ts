@@ -19,7 +19,7 @@ export class AboutPage {
   ionViewDidEnter(){
     let start = new Date();
     let end = new Date();
-    end.setDate(end.getDate() + 2 );
+    end.setDate(end.getDate() + 1 );
 
     if (this.platform.is('ios')) {
 
@@ -43,11 +43,15 @@ export class AboutPage {
             this.IOSevent = false;
         });
 
-  } else if (this.platform.is('android')) {
-      this.calendar.listEventsInRange(start, end).then(data => {
-        this.events = data;
-      });
+    } else if (this.platform.is('android')) {
+        this.calendar.listEventsInRange(start, end).then(data => {
+          this.events = data;
+        });
+    } else {
+        this.events = [{title: "NEW TITLE",location: "Madison", startDate: "Today", endDate: "Tomo"},{title: "NEW TITLE",location: "Madison", startDate: "Today", endDate: "Tomo"}];
     }
   }
+
+  test(){}
 
 }
