@@ -8,7 +8,10 @@
     "start": "ionic-app-scripts serve",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
-    "lint": "ionic-app-scripts lint"
+    "lint": "ionic-app-scripts lint",
+    "appium": "appium",
+    "appium-doctor": "appium-doctor",
+    "test": "wdio tests/wdio.conf.js"
   },
   "dependencies": {
     "@angular/animations": "5.2.11",
