@@ -28,7 +28,7 @@ level : string = "";
 
     this.storage.get('gender').then((val) => {
     console.log('Your gender is', val);
-    if (val == null) {
+    if ( val == null) {
       this.navCtrl.push(SettingsSetPage);
     }
     });
@@ -39,18 +39,20 @@ level : string = "";
 			console.log("Device is ready! View did enter!");
 			let options = {
 				enableHighAccuracy: true,
-				timeout: 10000,
+				timeout: 100000,
         maximumAge: 0
 			}
 			this.geolocation.getCurrentPosition(options).then((resp) => {
 				console.log("My position: " + resp.coords.latitude + ", " + resp.coords.longitude);
 
+        //this.storage.set('lat', resp.coords.latitude);
+        //this.storage.set('long', resp.coords.longitude);
         var apiCall = "https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast/hourly"
-         console.log(apiCall);
+         //console.log(apiCall);
            this.http.get<apiResponse>(apiCall).subscribe((response) => {
-            console.log(response);
+            //console.log(response);
              this.hourlyReport = response.properties.periods;
-             console.log(response.properties.periods);
+             //console.log(response.properties.periods);
              this.weatherLocal = response.properties.periods[0].temperature;
              this.whatToWear();
           }, err => {
@@ -61,6 +63,11 @@ level : string = "";
 				console.log("Error getting location Code: " + error.code + ", Message: " + error.message);
 			});
 		});
+    //https://ionicframework.com/docs/v3/native/native-geocoder/ can be used to translate a string city to coordinates.
+
+    //Design idea: on home use gradient as background for rhe item card (downloads/5829ee36918eb80664d5a09f.jpeg) and use gif or annimated icon to display weather conditions
+    //to get weather conditions use the api call https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast
+    //the response in periods[0].shortForecast we will get a string of weather conditions that should be used to determine graphic.
 	}
 
 /*
@@ -138,8 +145,8 @@ Inputs:
       var toleranceWarm = 1;
       //Find #min outside at each temperature level
       for(var i=0;i<7;i++){
-        console.log("IN FOR LOOP()");
-        console.log(this.hourlyReport[i].temperature);
+        //console.log("IN FOR LOOP()");
+        //console.log(this.hourlyReport[i].temperature);
         if (this.hourlyReport[i].temperature < tempL1){
           minLevel1 += 1;//minOutside[i];
         }
@@ -152,9 +159,9 @@ Inputs:
       }
       //Calculate "level" based on minutes spent at each level, this is the secret sauce (maybe?)
       //This doesn't consider if time spent is continuous or not... Do we care?
-      console.log(minLevel1);
-      console.log(minLevel2);
-      console.log(minLevel3);
+      //console.log(minLevel1);
+      //console.log(minLevel2);
+      //console.log(minLevel3);
       if (minLevel1 > minColdNeedCoat * toleranceCold){
         this.level = "wear coat, bundle up";
       }
@@ -165,6 +172,6 @@ Inputs:
         this.level = "shorts are good";
         }
 
-        console.log("THIS IS THE LEVEL  " +  this.level);
+        //console.log("THIS IS THE LEVEL  " +  this.level);
     }
 }

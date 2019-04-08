@@ -1,6 +1,9 @@
 <ion-content padding>
 <h1>Set Settings</h1>
 <br>
+
+ <div style="width:150px;height:50px;" id="my-login-button-target" (click)="snapKitInit()" ></div>
+<!--
 <ion-list style="width: 85%;margin: auto;" radio-group [(ngModel)]="gender">
   <ion-label>Gender</ion-label>
     <ion-item>
@@ -22,7 +25,7 @@
       </ion-select>
     </ion-item>
   </ion-row>
-
+-->
 <br>
 <br>
 
@@ -34,6 +37,6 @@
   <br>
   <br>
   <button ion-button color="success" (click)="submit()">Submit</button>
-</ion-list>
-
+<!--</ion-list>-->
+<img src={{this.resp}} style="height:200px;width:auto;">
 </ion-content>
