@@ -8,7 +8,7 @@ exports.config = {
 
   // This defines which kind of device we want to test on, as well as how it should be
   // configured.
-  capabilities: [{
+  /*capabilities: [{
     // 'Android' or 'iOS'
     platformName: 'Android',
 
@@ -31,10 +31,22 @@ exports.config = {
     // When set to true, it will not show permission dialogs, but instead grant all
     // permissions automatically.
     autoGrantPermissions: true
-  }],
+  }]*/
+  capabilities: [{
+  platformName: 'iOS',
+  platformVersion: '11.2',
+  deviceName: 'iPhone 7',
+  //udid: '7bd4907674e53a9513d1d9696cc61bc0688b64ed',
+  app: '.platforms/ios/MyApp.xcworkspace',
+  //platformVersion: '12.2',
+  //automationName: 'XCUITest',
+  autoWebview: true,
+  autoGrantPermissions: true
+}],
+
 
   // Where the files we are testing can be found.
-  specs: ['./tests/spec/**/*.js'],
+  specs: ['./tests/specs/tests:specs:button.js'],
 
   // Use the Appium plugin for Webdriver. Without this, we would need to run appium
   // separately on the command line.

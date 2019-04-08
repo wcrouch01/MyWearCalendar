@@ -44,11 +44,18 @@
     "ionicons": "3.0.0",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
+    "webdriverio": "^4.12.0",
     "zone.js": "0.8.29"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.2.1",
-    "typescript": "~2.6.2"
+    "appium": "^1.12.1",
+    "appium-doctor": "^1.9.0",
+    "typescript": "~2.6.2",
+    "wdio-appium-service": "^0.2.3",
+    "wdio-jasmine-framework": "^0.3.8",
+    "wdio-spec-reporter": "^0.1.5",
+    "webdriverio": "^4.12.0"
   },
   "description": "An Ionic project",
   "cordova": {
