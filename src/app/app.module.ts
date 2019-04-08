@@ -9,6 +9,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsSetPage } from '../pages/settings-set/settings-set';
+import { CalendarSetPage } from '../pages/calendar-set/calendar-set';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -26,7 +27,8 @@ import { IonicStorageModule } from '@ionic/storage';
     ContactPage,
     HomePage,
     TabsPage,
-    SettingsSetPage
+    SettingsSetPage,
+    CalendarSetPage
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,8 @@ import { IonicStorageModule } from '@ionic/storage';
     ContactPage,
     HomePage,
     TabsPage,
-    SettingsSetPage
+    SettingsSetPage,
+    CalendarSetPage
   ],
   providers: [
     StatusBar,
