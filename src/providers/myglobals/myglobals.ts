@@ -52,6 +52,12 @@ export class MyglobalsProvider {
           }
           else{
             this.events = data;
+
+            for(let i=0; i<this.events.length; i++){
+              this.events[i].startDate = (new Date(this.events[i].startDate)).toLocaleTimeString();;
+              this.events[i].endDate = (new Date(this.events[i].endDate)).toLocaleTimeString();;
+            }
+
             this.IOSevent = true;
 
           }
@@ -64,10 +70,18 @@ export class MyglobalsProvider {
     } else if (this.platform.is('android')) {
         this.calendar.listEventsInRange(start, end).then(data => {
           this.events = data;
+          for(let i=0; i<this.events.length; i++){
+            this.events[i].startDate = (new Date(this.events[i].dtstart)).toLocaleTimeString();;
+            this.events[i].endDate = (new Date(this.events[i].dtend)).toLocaleTimeString();;
+          }
         });
     } else {
         this.events = [{title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo"},{title: "Event for the day",location: "Madison", startDate: "Today", endDate: "Tomo"}, {title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo"}];
     }
+
+
+    console.log("here are events: ");
+    console.log(JSON.stringify(this.events));
 
   }
 
@@ -81,7 +95,7 @@ export class MyglobalsProvider {
       //console.log("Trying to find: "+this.events[i].title.replace(/\s/g, "")+"~"+this.events[i+1].title.replace(/\s/g, ""));
 
       this.storage.get(this.events[i].title.replace(/\s/g, "")+"~"+this.events[i+1].title.replace(/\s/g, "")).then((val) => {
-        //console.log('Found Event', val);
+        console.log('Found Event', val);
         if ( val != null) {
           this.events[i].transport = val.transport;
           this.events[i].time = val.time;

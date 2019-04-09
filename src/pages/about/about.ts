@@ -19,14 +19,16 @@ export class AboutPage {
     public global: MyglobalsProvider, private storage: Storage) {
       this.IOSevent = true;
 
-      //will load and get events if we don't have them already
-      this.global.loadAll();
+      //get global events
       this.events = this.global.events;
 
   }
 
   ionViewDidEnter(){
     console.log('ionViewDidLoad CalendarPage');
+
+    //load events if they don't exist yet
+    this.global.loadAll();
   }
 
 

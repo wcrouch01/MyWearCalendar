@@ -36,9 +36,7 @@ export class HomePage {
   }
 
   ionViewDidEnter(){
-    //load events provider
-    this.global.loadAll();
-
+    
 		this.platform.ready().then(() => {
 			console.log("Device is ready! View did enter!");
 			let options = {
@@ -73,7 +71,8 @@ export class HomePage {
     //to get weather conditions use the api call https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast
     //the response in periods[0].shortForecast we will get a string of weather conditions that should be used to determine graphic.
   
-  
+    //load events provider
+    this.global.loadAll();
   }
 
 /*

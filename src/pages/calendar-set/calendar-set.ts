@@ -65,6 +65,7 @@ export class CalendarSetPage {
       transport: this.transport,
       time: this.time
     });
+    console.log("Writing transport/time to: "+this.from.replace(/\s/g, "")+"~"+this.to.replace(/\s/g, ""));
   }
 
   submit(){
