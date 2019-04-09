@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, Platform  } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
+import { Storage } from '@ionic/storage';
 import { CalendarSetPage } from '../calendar-set/calendar-set';
 import { MyglobalsProvider } from '../../providers/myglobals/myglobals';
 
@@ -15,17 +16,28 @@ export class AboutPage {
   calendars: any;
 
   constructor(public navCtrl: NavController, private calendar: Calendar, private platform: Platform,
-    public global: MyglobalsProvider) {
+    public global: MyglobalsProvider, private storage: Storage) {
       this.IOSevent = true;
       this.global = global;
+
+      //do this in the constructor, otherwise events get overridden on each page load
+      this.getEvents();
+
+      //get 'transportation' and 'time' from the local storage if it exists
+      this.getTransport();
+
   }
 
   ionViewDidEnter(){
-    let start = new Date();
-    let end = new Date();
-    end.setDate(end.getDate() + 1 );
+    
+  }
 
-    if (this.platform.is('ios')) {
+  getEvents(){
+    let start = new Date();
+      let end = new Date();
+      end.setDate(end.getDate() + 1 );
+
+      if (this.platform.is('ios')) {
 
         this.calendar.findEvent('', '', '',start, end)
         .then(data => {
@@ -57,6 +69,25 @@ export class AboutPage {
 
     this.global.events = this.events;
   }
+
+  //get 'transportation' and 'time' from the local storage if it exists
+  getTransport(){
+    for(let i=0; i<this.global.events.length-1; i++){
+      //console.log(this.global.events[i]); 
+
+      this.storage.get(this.global.events[i].title.replace(/\s/g, "")+"~"+this.global.events[i+1].title.replace(/\s/g, "")).then((val) => {
+        //console.log('Found Event', val);
+        if ( val != null) {
+          this.global.events[i].transport = val.transport;
+          this.global.events[i].time = val.time;
+        }
+        });
+    }
+      
+
+  }
+
+
 
   test(i){
 

@@ -8,8 +8,18 @@
     </ion-card-header>
     <ion-card-content>
       {{e.location}}
-      {{e.startDate}} to {{e.endDate}}
+      {{e.startDate}} to {{e.endDate}}      
     </ion-card-content>
-    <div *ngIf="i != events.length-1" class="btn" (click)="this.test(i)"><ion-icon class="add-button" name="add"></ion-icon></div>
+    
+    <div *ngIf="i != events.length-1 && e.transport===undefined" class="btn" (click)="this.test(i)"><ion-icon class="add-button" name="add"></ion-icon></div>
+    
+    <div *ngIf="i != events.length-1 && e.transport!==undefined" class="center-lab">
+      <ion-card class="center-card">
+        <ion-label>Transportation: {{e.transport}}</ion-label>
+        
+        <ion-label>Time outside (minutes): {{e.time}}</ion-label>
+      </ion-card>
+    </div>
+    
   </ion-card>
 </ion-content>
