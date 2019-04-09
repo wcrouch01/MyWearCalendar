@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, Platform  } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
 import { CalendarSetPage } from '../calendar-set/calendar-set';
+import { MyglobalsProvider } from '../../providers/myglobals/myglobals';
 
 @Component({
   selector: 'page-about',
@@ -13,8 +14,10 @@ export class AboutPage {
   IOSevent: boolean;
   calendars: any;
 
-  constructor(public navCtrl: NavController, private calendar: Calendar, private platform: Platform) {
+  constructor(public navCtrl: NavController, private calendar: Calendar, private platform: Platform,
+    public global: MyglobalsProvider) {
       this.IOSevent = true;
+      this.global = global;
   }
 
   ionViewDidEnter(){
@@ -51,13 +54,16 @@ export class AboutPage {
     } else {
         this.events = [{title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo"},{title: "Event for the day",location: "Madison", startDate: "Today", endDate: "Tomo"}, {title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo"}];
     }
+
+    this.global.events = this.events;
   }
 
   test(i){
 
     this.navCtrl.push(CalendarSetPage, {
         from: this.events[parseInt(i)].title,
-        to: this.events[parseInt(i)+1].title
+        to: this.events[parseInt(i)+1].title,
+        ind: parseInt(i)
       });
   }
 

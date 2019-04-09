@@ -17,6 +17,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClientModule } from '@angular/common/http';
 import { Calendar } from '@ionic-native/calendar';
 import { IonicStorageModule } from '@ionic/storage';
+import { MyglobalsProvider } from '../providers/myglobals/myglobals';
 
 
 
@@ -51,7 +52,8 @@ import { IonicStorageModule } from '@ionic/storage';
     SplashScreen,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Calendar
+    Calendar,
+    MyglobalsProvider
   ]
 })
 export class AppModule {}
