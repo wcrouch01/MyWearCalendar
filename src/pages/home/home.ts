@@ -36,6 +36,9 @@ export class HomePage {
   }
 
   ionViewDidEnter(){
+    //load events provider
+    this.global.loadAll();
+
 		this.platform.ready().then(() => {
 			console.log("Device is ready! View did enter!");
 			let options = {
@@ -69,7 +72,9 @@ export class HomePage {
     //Design idea: on home use gradient as background for rhe item card (downloads/5829ee36918eb80664d5a09f.jpeg) and use gif or annimated icon to display weather conditions
     //to get weather conditions use the api call https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast
     //the response in periods[0].shortForecast we will get a string of weather conditions that should be used to determine graphic.
-	}
+  
+  
+  }
 
 /*
 Inputs:
@@ -124,7 +129,7 @@ Inputs:
 
     //get events (including transportation) from calendar page (it is loaded)
     var events = this.global.events;
-    
+
     //Find #min outside for each hour of the day
   //  for each hour of the day (h):
     //  for each cal item (x):

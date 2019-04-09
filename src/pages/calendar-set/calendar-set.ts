@@ -31,11 +31,24 @@ export class CalendarSetPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CalendarSetPage');
+
+    
   }
 
   //set default 'car' checked
   ngOnInit() {
-    this.transport='Car';
+    if (this.global.events[this.ind].transport !== undefined){
+      this.transport=this.global.events[this.ind].transport;
+    }else{
+      this.transport='Car';
+    }
+
+    if (this.global.events[this.ind].time !== undefined){
+      this.time=this.global.events[this.ind].time;
+    }else{
+      this.time=5;
+    }
+    
   }
 
   async presentToast(m) {
@@ -47,7 +60,7 @@ export class CalendarSetPage {
   }
 
   //save (no whitespace) from-to with transportation method and time outside
-  async saveEvent(){
+  saveEvent(){
     this.storage.set(this.from.replace(/\s/g, "")+"~"+this.to.replace(/\s/g, ""), {
       transport: this.transport,
       time: this.time
