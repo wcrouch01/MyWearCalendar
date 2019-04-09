@@ -49,16 +49,15 @@ export class AboutPage {
           this.events = data;
         });
     } else {
-        this.events = [{title: "NEW TITLE",location: "Madison", startDate: "Today", endDate: "Tomo"},{title: "NEW TITLE",location: "Madison", startDate: "Today", endDate: "Tomo"}];
+        this.events = [{title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo"},{title: "Event for the day",location: "Madison", startDate: "Today", endDate: "Tomo"}, {title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo"}];
     }
   }
 
   test(i){
-    console.log("bobthelizard4335: i = "+i)
 
     this.navCtrl.push(CalendarSetPage, {
-        from: "Class 1",
-        to: "Class 1"
+        from: this.events[parseInt(i)].title,
+        to: this.events[parseInt(i)+1].title
       });
   }
 

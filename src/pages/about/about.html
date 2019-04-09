@@ -10,6 +10,6 @@
       {{e.location}}
       {{e.startDate}} to {{e.endDate}}
     </ion-card-content>
-    <div *ngIf="i != events.length-1" class="btn" (click)="this.test({{i}})"><ion-icon class="add-button" name="add"></ion-icon></div>
+    <div *ngIf="i != events.length-1" class="btn" (click)="this.test(i)"><ion-icon class="add-button" name="add"></ion-icon></div>
   </ion-card>
 </ion-content>

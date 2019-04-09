@@ -15,6 +15,8 @@ import { NavController, NavParams } from 'ionic-angular';
 export class CalendarSetPage {
     from:any;
     to:any;
+    transport:any;
+    time:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.from = navParams.get("from");
@@ -28,6 +30,8 @@ export class CalendarSetPage {
   submit(){
 
     //validate and save
+
+    console.log(this.transport + " "+this.time+" minutes")
 
     this.navCtrl.pop();
   }
