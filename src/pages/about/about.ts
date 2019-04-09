@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, Platform  } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
+import { CalendarSetPage } from '../calendar-set/calendar-set';
 
 @Component({
   selector: 'page-about',
@@ -52,6 +53,13 @@ export class AboutPage {
     }
   }
 
-  test(){}
+  test(i){
+    console.log("bobthelizard4335: i = "+i)
+
+    this.navCtrl.push(CalendarSetPage, {
+        from: "Class 1",
+        to: "Class 1"
+      });
+  }
 
 }
