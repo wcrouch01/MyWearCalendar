@@ -40,7 +40,7 @@ export class CalendarSetPage {
     if (this.global.events[this.ind].transport !== undefined){
       this.transport=this.global.events[this.ind].transport;
     }else{
-      this.transport='Car';
+      this.transport='car';
     }
 
     if (this.global.events[this.ind].time !== undefined){
