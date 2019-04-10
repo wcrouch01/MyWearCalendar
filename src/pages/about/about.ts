@@ -56,13 +56,5 @@ export class AboutPage {
     
   }
 
-  //before the first event
-  editPreTransport(){
-
-    this.navCtrl.push(CalendarSetPage, {
-        to: this.events[0].title,
-        ind: 0
-      });
-  }
 
 }

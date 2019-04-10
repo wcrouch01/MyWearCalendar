@@ -28,12 +28,11 @@ export class CalendarSetPage {
     this.to = navParams.get("to");
     this.ind = navParams.get("ind");
     this.global = global;
+    this.pre = (this.from === undefined);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CalendarSetPage');
-
-    this.pre = (this.from === undefined);
 
     //set default 'car' checked
     if (this.pre){
@@ -63,6 +62,9 @@ export class CalendarSetPage {
     }
   }
 
+  ngOnInit(){
+    
+  }
 
   async presentToast(m) {
     const toast = await this.toastController.create({
