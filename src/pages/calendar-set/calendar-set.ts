@@ -34,11 +34,8 @@ export class CalendarSetPage {
     console.log('ionViewDidLoad CalendarSetPage');
 
     this.pre = (this.from === undefined);
-  }
 
-  //set default 'car' checked
-  ngOnInit() {
-    
+    //set default 'car' checked
     if (this.pre){
       if (this.global.events[this.ind].pre_transport !== undefined){
         this.transport=this.global.events[this.ind].pre_transport;
@@ -64,9 +61,8 @@ export class CalendarSetPage {
         this.time=5;
       }
     }
-    
-    
   }
+
 
   async presentToast(m) {
     const toast = await this.toastController.create({
