@@ -20,6 +20,7 @@ export class CalendarSetPage {
     ind:number;
     transport:any;
     time:any;
+    pre:boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public global: MyglobalsProvider, 
     public toastController: ToastController, private storage: Storage) {
@@ -32,22 +33,38 @@ export class CalendarSetPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad CalendarSetPage');
 
-    
+    this.pre = (this.from === undefined);
   }
 
   //set default 'car' checked
   ngOnInit() {
-    if (this.global.events[this.ind].transport !== undefined){
-      this.transport=this.global.events[this.ind].transport;
+    
+    if (this.pre){
+      if (this.global.events[this.ind].pre_transport !== undefined){
+        this.transport=this.global.events[this.ind].pre_transport;
+      }else{
+        this.transport='car';
+      }
+  
+      if (this.global.events[this.ind].pre_time !== undefined){
+        this.time=this.global.events[this.ind].pre_time;
+      }else{
+        this.time=5;
+      }
     }else{
-      this.transport='car';
+      if (this.global.events[this.ind].transport !== undefined){
+        this.transport=this.global.events[this.ind].transport;
+      }else{
+        this.transport='car';
+      }
+  
+      if (this.global.events[this.ind].time !== undefined){
+        this.time=this.global.events[this.ind].time;
+      }else{
+        this.time=5;
+      }
     }
-
-    if (this.global.events[this.ind].time !== undefined){
-      this.time=this.global.events[this.ind].time;
-    }else{
-      this.time=5;
-    }
+    
     
   }
 
@@ -61,11 +78,24 @@ export class CalendarSetPage {
 
   //save (no whitespace) from-to with transportation method and time outside
   saveEvent(){
-    this.storage.set(this.from.replace(/\s/g, "")+"~"+this.to.replace(/\s/g, ""), {
-      transport: this.transport,
-      time: this.time
-    });
-    console.log("Writing transport/time to: "+this.from.replace(/\s/g, "")+"~"+this.to.replace(/\s/g, ""));
+    if (this.pre){
+      this.storage.set("~"+this.to.replace(/\s/g, ""), {
+        transport: this.transport,
+        time: this.time
+      });
+    }else if (this.to === undefined){
+      this.storage.set(this.from.replace(/\s/g, "")+"~", {
+        transport: this.transport,
+        time: this.time
+      });
+    }else{
+      this.storage.set(this.from.replace(/\s/g, "")+"~"+this.to.replace(/\s/g, ""), {
+        transport: this.transport,
+        time: this.time
+      });
+    }
+    
+    //console.log("Writing transport/time to: "+this.from.replace(/\s/g, "")+"~"+this.to.replace(/\s/g, ""));
   }
 
   submit(){
@@ -73,8 +103,16 @@ export class CalendarSetPage {
     //validate and save
 
     console.log(this.transport + " "+this.time+" minutes")
-    this.global.events[this.ind].transport = this.transport;
-    this.global.events[this.ind].time = this.time;
+
+    //if this is a pre_event
+    if (this.pre){
+      this.global.events[this.ind].pre_transport = this.transport;
+      this.global.events[this.ind].pre_time = this.time;
+    }else{
+      this.global.events[this.ind].transport = this.transport;
+      this.global.events[this.ind].time = this.time;
+    }
+    
 
     if (this.time === undefined || parseInt(this.time) > 1440){
       this.presentToast('Time between events too large. Must be less than a day.');

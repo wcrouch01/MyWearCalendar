@@ -12,8 +12,8 @@
 
 <ion-content padding>
 
-  <h4><ion-label>From: {{from}}</ion-label></h4>
-  <h4><ion-label>To: {{to}}</ion-label></h4>
+  <h4 *ngIf="from!==undefined"><ion-label>From: {{from}}</ion-label></h4>
+  <h4 *ngIf="to!==undefined"><ion-label>To: {{to}}</ion-label></h4>
   <hr>
   <h6><ion-label>Select Transportation</ion-label></h6>
 <ion-list radio-group [(ngModel)]="transport">

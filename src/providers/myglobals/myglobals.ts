@@ -16,11 +16,9 @@ export class MyglobalsProvider {
     //declare global variables here, inject them into pages like 'about.ts'
     public events;
     public isRun: boolean;
-    private IOSevent: boolean;
 
   constructor(public http: HttpClient, private calendar: Calendar, private platform: Platform, private storage: Storage) {
     console.log('Hello MyglobalsProvider Provider');
-    this.IOSevent = true;
     this.isRun = false;
   }
 
@@ -48,7 +46,6 @@ export class MyglobalsProvider {
           console.log('results', JSON.stringify(data, null, '\t'));
           console.log(start, end);
           if (data.length <= 0){
-            this.IOSevent = false;
           }
           else{
             this.events = data;
@@ -57,14 +54,10 @@ export class MyglobalsProvider {
               this.events[i].startDate = (new Date(this.events[i].startDate)).toLocaleTimeString();;
               this.events[i].endDate = (new Date(this.events[i].endDate)).toLocaleTimeString();;
             }
-
-            this.IOSevent = true;
-
           }
 
       }, err => {
           console.error('err', err);
-          this.IOSevent = false;
       });
 
     } else if (this.platform.is('android')) {
@@ -89,18 +82,40 @@ export class MyglobalsProvider {
   loadTransportation(){
 
     
-    for(let i=0; i<this.events.length-1; i++){
+    for(let i=0; i<this.events.length; i++){
       //console.log(this.global.events[i]); 
 
       //console.log("Trying to find: "+this.events[i].title.replace(/\s/g, "")+"~"+this.events[i+1].title.replace(/\s/g, ""));
 
-      this.storage.get(this.events[i].title.replace(/\s/g, "")+"~"+this.events[i+1].title.replace(/\s/g, "")).then((val) => {
-        console.log('Found Event', val);
-        if ( val != null) {
-          this.events[i].transport = val.transport;
-          this.events[i].time = val.time;
-        }
+      //if before first event
+      if (i == 0){
+        this.storage.get("~"+this.events[i].title.replace(/\s/g, "")).then((val) => {
+          console.log('Found Pre Event', val);
+          if ( val != null) {
+            this.events[i].pre_transport = val.transport;
+            this.events[i].pre_time = val.time;
+          }
         });
+      }
+
+      //if last event
+      if (i == this.events.length-1){
+        this.storage.get(this.events[i].title.replace(/\s/g, "")+"~").then((val) => {
+          console.log('Found Event', val);
+          if ( val != null) {
+            this.events[i].transport = val.transport;
+            this.events[i].time = val.time;
+          }
+        });
+      }else{  //every other event in between
+        this.storage.get(this.events[i].title.replace(/\s/g, "")+"~"+this.events[i+1].title.replace(/\s/g, "")).then((val) => {
+          console.log('Found Post Event', val);
+          if ( val != null) {
+            this.events[i].transport = val.transport;
+            this.events[i].time = val.time;
+          }
+        });
+      }
     }
   }
 
