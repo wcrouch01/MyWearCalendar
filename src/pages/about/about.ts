@@ -42,3 +42,9 @@ export class AboutPage {
   }
 
 }
+
+export class LowerUpperPipeComponent {
+  // TODO(issue/24571): remove '!'.
+  value !: string;
+  change(value: string) { this.value = value; }
+}

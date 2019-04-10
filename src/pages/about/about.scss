@@ -1,44 +1,45 @@
 page-about {
 
   .btn {
+    display: inline-block;
     height: 40px;
     width: 40px;
     border-radius: 50%;
-    background-color: green;
-    position: absolute;
-    left: 50%;
-    margin-top: -15px;
+    background-color: rgb(211, 64, 64);
 
-  }
-
-  .center-lab {
-
-    
-
-    position: absolute;
-    
-    left: 39%;
-
-    margin: auto;
-    margin-top: -45px;
-
-  }
-
-  .center-card {
-    border-style: solid;
-    border-width: 1px;
-    padding: 2px;
-    padding-left: 6px;
-    padding-right: 6px;
+    box-shadow: 2px 2px 2px grey;
   }
 
   .add-button{
     font-size: 30px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    padding-top: 5px;
     color: white;
     display: block;
   }
+
+  .outer{
+    text-align: center;
+  }
+
+  .inner{
+    display: inline-block;
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(211, 64, 64);
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px grey;
+    background-color: rgba(211, 64, 64, 0.103);
+  }
+
+  .transp-icon{
+    font-size: 30px;
+    padding-top: 5px;
+  }
+
+  h6 {
+    margin-bottom: 0;
+  }
+  
 }
