@@ -15,7 +15,7 @@ export class SettingsSetPage {
   colors: any;
   colors_Men: Array<string> = ['270452214_2-s1', '270452208_2-s1','270452200_2-s1','270452176_2-s1','270452131_2-s1','270452117_2-s1','270452103_2-s1'];
   colors_Women: Array<string> = ['270452106_2-s1','270452105_2-s1','270452098_2-s1','270452091_2-s1','270452076_2-s1','270452062_2-s1','270452058_2-s1'];
-  color: string = '270452214_2-s1';
+  color: string;
   notifications: any;
   resp: any;
   args:any;
@@ -27,7 +27,7 @@ export class SettingsSetPage {
     this.gender = 1;
     this.colors = this.colors_Men;
     this.args = navParams.get('args');
-
+    this.color = '270452214_2-s1';
     console.log("this is args", JSON.stringify(this.args));//.$link.fragment));
 
 
@@ -39,10 +39,12 @@ export class SettingsSetPage {
       console.log(newValue);
       if (newValue == 2) {
         this.colors = this.colors_Women;
+        this.color = '270452106_2-s1';
         this.prepareColorSelector();
       }
       else{
         this.colors = this.colors_Men;
+        this.color = '270452214_2-s1';
         this.prepareColorSelector();
       }
   }
@@ -62,6 +64,7 @@ submit(){
            this.storage.set('gender', this.gender);
            this.storage.set('color', this.color);
            this.storage.set('notifications', this.notifications);
+            this.navCtrl.getPrevious().data.thing1 = this.color;
            this.navCtrl.pop();
 }
 

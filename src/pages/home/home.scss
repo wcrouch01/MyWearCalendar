@@ -5,7 +5,6 @@ page-home {
   position: absolute;
   top: 20px;
   right: 20px;
-  background-image: url('../../assets/icon/cloudy-day-1.svg');
   background-size: cover;
 }
 .temp{
@@ -16,5 +15,14 @@ page-home {
   color: white;
   font-size: 45px;
   font-weight: 700;
+}
+
+.graphic{
+  font-size: 40px;
+  color: black;
+  background: transparent;
+  position: absolute;
+  top: 415px;
+  right: 55px;
 }
 }
