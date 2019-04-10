@@ -4,7 +4,7 @@ window.snapKitInit = function () {
  // Mount Login Button
  snap.loginkit.mountButton(loginButtonIconId, {
    clientId: 'd0106cc3-484e-4634-9e09-491fe6e198c2',
-   redirectURI: 'https://google.com',
+   redirectURI: 'wearcalendar://settings-set/',
    scopeList: [
      'user.display_name',
      'user.bitmoji.avatar',

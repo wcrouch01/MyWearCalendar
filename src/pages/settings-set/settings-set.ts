@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 declare var snap;
@@ -16,10 +16,18 @@ export class SettingsSetPage {
   color: string = '#d435a2';
   notifications: any;
   resp: any;
+  args:any;
+  link:any;
+  route:any;
 
-  constructor(public navCtrl: NavController, private storage: Storage) {
+  constructor(public navCtrl: NavController, private storage: Storage, private navParams: NavParams) {
     this.notifications = true;
     this.gender = 1;
+
+    this.args = navParams.get('args');
+
+    console.log("this is args", JSON.stringify(this.args));//.$link.fragment));
+
 
     console.log("this is snap", snap);
     console.log("this is init", snapKitInit);
@@ -55,12 +63,12 @@ export class SettingsSetPage {
 
 submit(){
 
-  snap.loginkit.fetchUserInfo()
+  this.args.fetchUserInfo()
     .then(data => {
       console.log("this is this.resp2 ", data);
       this.resp = data.data.me.bitmoji.avatar;
       console.log("this is this.resp2 resp ", this.resp);
-    });
+    }).catch(err => console.log("this err: ",err.message));
         //   this.storage.set('gender', this.gender);
         //   this.storage.set('color', this.color);
           // this.storage.set('notifications', this.notifications);
