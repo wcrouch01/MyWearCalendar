@@ -1,7 +1,20 @@
 page-home {
 .gif{
-  height: 200px;
+  height: 170px;
+  width: 170px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
   background-image: url('../../assets/icon/cloudy-day-1.svg');
-  background-size: contain;
+  background-size: cover;
+}
+.temp{
+
+  position: absolute;
+  top: 160px;
+  right: 76px;
+  color: white;
+  font-size: 45px;
+  font-weight: 700;
 }
 }

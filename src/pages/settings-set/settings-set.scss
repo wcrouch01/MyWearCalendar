@@ -5,8 +5,10 @@ page-settings-set {
 
 .colorselect {
 		.select-text {
-				width: 75px;
+				width: 150px;
 				border-radius: 5px;
+				font-size: 0px;
+				margin-bottom: 0px;
 		}
 
 		.alert-radio-inner,
@@ -16,27 +18,29 @@ page-settings-set {
 		}
 
 		&.colorselected:before {
-				content: '\2713';
+
 				color: white;
 				z-index: 999999;
 				width: 100%;
 				height: 100%;
-				font-size: 33px;
 				left: 50%;
 				top: 50%;
 				position: relative;
 				transform: translate(-50%);
 		}
 
-		$colorsToSelect: "#d435a2" "#a834bf" "#6011cf" "#0d0e81" "#0237f1" "#0d8bcd" "#16aca4" "#3c887e" "#157145" "#57a773" "#88aa3d" "#b7990d" "#fcbf55" "#ff8668" "#ff5c6a" "#c2454c" "#c2183f" "#d8226b" "#8f2d56" "#482971" "#000000" "#561f37" "#433835" "#797979" "#819595";
+		$colorsToSelect: '270452106_2-s1' '270452106_2-s1' '270452105_2-s1' '270452098_2-s1' '270452091_2-s1' '270452076_2-s1' '270452062_2-s1' '270452058_2-s1' '270452214_2-s1' '270452208_2-s1' '270452200_2-s1' '270452176_2-s1' '270452131_2-s1' '270452117_2-s1' '270452103_2-s1';
 
 		@each $colorOption in $colorsToSelect {
-				$colorWithoutHash: str-slice($colorOption, 2, 7);
+				$colorWithoutHash: $colorOption;
 
 				&.color_#{$colorWithoutHash} {
 						&, & .select-text {
-								color: #{$colorOption};
-								background-color: #{$colorOption};
+								background-image: url("https://render.bitstrips.com/v2/cpanel/10212369-" + $colorOption + "-v1.png?transparent=1&amp;palette=1&amp;width=300");
+								background-position: center;
+								background-repeat:no-repeat;
+								background-size: contain;
+								height: 100px;
 						}
 				}
 		}

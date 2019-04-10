@@ -23,20 +23,37 @@ export class HomePage {
   weatherLocal: any;
   hourlyReport: [any];
   level : string = "";
+  gender: any;
+  color: any;
+  notifications: any;
+  gradient:any;
 
   constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient,
     private platform: Platform, private storage: Storage, public global: MyglobalsProvider) {
 
+      this.gradient = "linear-gradient(#fffba4,#019dc5)";
+      // Sun "linear-gradient(#fffba4,#019dc5)"
+      // Rain "linear-gradient(#aea99d,#efdf92,#007aac)"
+      // Snow "linear-gradient(#949598,#0060b5)"
+      // Thunder Strom "linear-gradient(#76787b,#007bcb, #002856)"
     this.storage.get('gender').then((val) => {
     console.log('Your gender is', val);
+    this.gender = val;
     if ( val == null) {
       this.navCtrl.push(SettingsSetPage);
     }
     });
+
+    this.storage.get('color').then((val) => {
+    this.color = val;
+    //this.level = "https://render.bitstrips.com/render/10215854/" + this.color + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=300";
+    console.log('Your character is', val);
+    });
+
   }
 
   ionViewDidEnter(){
-    
+
 		this.platform.ready().then(() => {
 			console.log("Device is ready! View did enter!");
 			let options = {
@@ -70,7 +87,7 @@ export class HomePage {
     //Design idea: on home use gradient as background for rhe item card (downloads/5829ee36918eb80664d5a09f.jpeg) and use gif or annimated icon to display weather conditions
     //to get weather conditions use the api call https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast
     //the response in periods[0].shortForecast we will get a string of weather conditions that should be used to determine graphic.
-  
+
     //load events provider
     this.global.loadAll();
   }
@@ -172,13 +189,31 @@ Inputs:
     //console.log(minLevel2);
     //console.log(minLevel3);
     if (minLevel1 > minColdNeedCoat * toleranceCold){
-      this.level = "wear coat, bundle up";
+      if (this.gender == 1) { //women outfit
+          this.level = "https://render.bitstrips.com/render/10215854/"+ this.color +"-v1.png?cropped=%22body%22&outfit=944137&head_rotation=0&body_rotation=0&width=300"
+      }
+      else{
+          this.level = "https://render.bitstrips.com/render/10215854/" + this.color + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=300"
+      }
+      //this.level = "wear coat, bundle up";
     }
     else if (minLevel2 > minCoolNeedJacket * toleranceWarm){
-      this.level = "wear pants, light jacket";
+      if (this.gender == 1) {
+          this.level = "https://render.bitstrips.com/render/10215854/"+ this.color +"-v1.png?cropped=%22body%22&outfit=957114&head_rotation=0&body_rotation=0&width=300"
+      }
+      else{
+          this.level = "https://render.bitstrips.com/render/10215854/" + this.color + "-v3.png?cropped=%22body%22&outfit=962366&head_rotation=0&body_rotation=0&width=300"
+      }
+      //this.level = "wear pants, light jacket";
     }
     else{
-      this.level = "shorts are good";
+      if (this.gender == 1) {
+          this.level = "https://render.bitstrips.com/render/10215854/"+ this.color +"-v1.png?cropped=%22body%22&outfit=889503&head_rotation=0&body_rotation=0&width=300"
+      }
+      else{
+          this.level = "https://render.bitstrips.com/render/10215854/" + this.color + "-v3.png?cropped=%22body%22&outfit=1017606&head_rotation=0&body_rotation=0&width=300"
+      }
+      //this.level = "shorts are good";
       }
 
       //console.log("THIS IS THE LEVEL  " +  this.level);
