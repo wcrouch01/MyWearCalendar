@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Calendar } from '@ionic-native/calendar';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyglobalsProvider } from '../providers/myglobals/myglobals';
+import { Deeplinks } from '@ionic-native/deeplinks';
 
 
 
@@ -53,7 +54,8 @@ import { MyglobalsProvider } from '../providers/myglobals/myglobals';
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Calendar,
-    MyglobalsProvider
+    MyglobalsProvider,
+    Deeplinks
   ]
 })
 export class AppModule {}

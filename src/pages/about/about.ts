@@ -34,10 +34,34 @@ export class AboutPage {
 
   editTransport(i){
 
+    i = parseInt(i);
+
+    if (i == this.events.length-1){
+      this.navCtrl.push(CalendarSetPage, {
+        from: this.events[i].title,
+        ind: i
+      });
+    }else if (i == -1){
+      this.navCtrl.push(CalendarSetPage, {
+        to: this.events[0].title,
+        ind: 0
+      });
+    }else{
+      this.navCtrl.push(CalendarSetPage, {
+        from: this.events[i].title,
+        to: this.events[i+1].title,
+        ind: i
+      });
+    }
+    
+  }
+
+  //before the first event
+  editPreTransport(){
+
     this.navCtrl.push(CalendarSetPage, {
-        from: this.events[parseInt(i)].title,
-        to: this.events[parseInt(i)+1].title,
-        ind: parseInt(i)
+        to: this.events[0].title,
+        ind: 0
       });
   }
 
