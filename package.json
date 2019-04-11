@@ -30,6 +30,7 @@
     "@ionic-native/splash-screen": "~4.18.0",
     "@ionic-native/status-bar": "~4.18.0",
     "@ionic/storage": "2.2.0",
+    "acorn": "^6.1.1",
     "cordova-android": "7.1.4",
     "cordova-ios": "4.5.5",
     "cordova-plugin-calendar": "^5.1.4",
@@ -49,23 +50,26 @@
     "nyc": "^13.3.0",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
-    "webpack": "^4.29.6",
+    "webpack-dev-server": "^3.3.1",
     "zone.js": "0.8.29"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.2.1",
+    "@ionic/app-scripts": "^3.2.3",
     "appium": "^1.12.1",
     "appium-doctor": "^1.9.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "istanbul-instrumenter-loader": "^3.0.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage-istanbul-reporter": "^2.0.5",
     "karma-jasmine": "^2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.0",
     "karma-webpack": "^3.0.5",
     "typescript": "~2.6.2",
     "wdio-appium-service": "^0.2.3",
     "wdio-jasmine-framework": "^0.3.8",
     "wdio-spec-reporter": "^0.1.5",
-    "webdriverio": "^4.14.4"
+    "webdriverio": "^4.14.4",
+    "webpack": "^4.29.6"
   },
   "description": "An Ionic project",
   "cordova": {

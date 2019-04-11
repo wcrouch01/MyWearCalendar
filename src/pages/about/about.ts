@@ -7,7 +7,7 @@ import { Calendar } from '@ionic-native/calendar';
   templateUrl: 'about.html'
 })
 export class AboutPage {
-
+ 
   events: any;
   IOSevent: boolean;
   calendars: any;
