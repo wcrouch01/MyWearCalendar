@@ -19,7 +19,7 @@ import { Calendar } from '@ionic-native/calendar';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyglobalsProvider } from '../providers/myglobals/myglobals';
 import { Deeplinks } from '@ionic-native/deeplinks';
-
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
 
 
 @NgModule({
@@ -51,6 +51,7 @@ import { Deeplinks } from '@ionic-native/deeplinks';
   providers: [
     StatusBar,
     SplashScreen,
+    NativeGeocoder,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Calendar,

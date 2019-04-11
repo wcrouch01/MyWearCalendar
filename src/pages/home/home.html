@@ -4,22 +4,24 @@
 
     </ion-card-content>
     <ion-card-header>
-    <div [ngStyle]="{ 'background-image' : outfit}" style="height: 300px;width: auto;padding-left: 15px;background-repeat: no-repeat;background-size:contain;" ></div>
-    <div [ngStyle]="{ 'background-image' : graphic}" class="gif"></div>
-    <div class="temp">
-      {{temperature}}
-    </div>
+      <div class="temp">
+        {{temperature}}
+      </div>
+      <div [ngStyle]="{ 'background-image' : graphic}" class="gif"></div>
+      <div [ngStyle]="{ 'background-image' : outfit}" style="height: 300px;width: auto;padding-left: 15px;background-repeat: no-repeat;background-size:contain;" ></div>
     </ion-card-header>
   </ion-card>
-  <ion-card (click)='markLocation()'>
-    <ion-card-header>
-    <ion-card-title>Set New Location</ion-card-title>
+  <ion-card>
+    <ion-card-header (click)='markLocation()'>
+      <ion-card-title>Set New Location</ion-card-title>
+      <ion-icon class="graphic" name="locate"></ion-icon>
     </ion-card-header>
-    <ion-card-content>
 
-          <ion-icon class="graphic" name="locate"></ion-icon>
-
-    </ion-card-content>
+    <ion-card-content *ngIf="dropdown">
+      <p>Traveling? Input a new city to change the output above</p>
+        <ion-input placeholder="City,ZipCode" [(ngModel)]="newLoc"></ion-input>
+        <button ion-button light (click)='setNewLocation()' >Change Location</button>
+      </ion-card-content>
 
   </ion-card>
 
