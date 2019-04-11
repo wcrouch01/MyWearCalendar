@@ -64,7 +64,7 @@ export class HomePage {
 
   setOutfit(val){
     if (this.level == "wear coat, bundle up"){
-      if (this.gender == 1) { //women outfit
+      if (this.gender == 2) { //women outfit
           this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=944137&head_rotation=0&body_rotation=0&width=300')"
       }
       else{
@@ -72,7 +72,7 @@ export class HomePage {
       }
     }
     else if (this.level == "wear pants, light jacket"){
-      if (this.gender == 1) {
+      if (this.gender == 2) {
           this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=957114&head_rotation=0&body_rotation=0&width=300')"
       }
       else{
@@ -80,7 +80,7 @@ export class HomePage {
       }
     }
     else{ //this.level = "shorts are good";
-      if (this.gender == 1) {
+      if (this.gender == 2) {
           this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=889503&head_rotation=0&body_rotation=0&width=300')"
       }
       else{
@@ -129,7 +129,7 @@ export class HomePage {
              }else if (this.shortForecast.includes("Snow") || this.shortForecast.includes("snow")) {
                  this.graphic = "url('../../assets/icon/snowy-1.svg')";
                  this.gradient = "linear-gradient(#949598,#0060b5)";
-             }else if (this.shortForecast.includes("Rain") || this.shortForecast.includes("rain")) {
+             }else if (this.shortForecast.includes("Rain") || this.shortForecast.includes("rain") || this.shortForecast.includes("Sleet")) {
                  this.graphic = "url('../../assets/icon/rainy-1.svg')";
                  this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
              }else if (this.shortForecast.includes("Cloud") || this.shortForecast.includes("cloud")) {
@@ -252,28 +252,37 @@ Inputs:
     }
 
     //get now, and the time when we are done (end)
-    let now = new Date();
-    let end = now;
-    let hrDate = now;
+    //let now = new Date();
+    let end = new Date();
+    let hrDate = new Date();
+    let hrDatep1 = new Date();
     end.setHours( end.getHours() + numHours );
+    hrDatep1.setHours( hrDatep1.getHours() + 1 );
 
     for(let h=0; h<numHours; h++){
 
       for(let i=0; i<events.length; i++){
 
+        //console.log("DOING: hour "+h);
+        //console.log("dtend: "+(new Date(events[i].dtend)) + " end "+end+" hrDate "+hrDate + " now "+now);
+        //console.log((new Date(events[i].dtend)) < end);
+        //console.log((new Date(events[i].dtend)) > hrDate);
+
+        let eDate = new Date(events[i].dtend);
+
         //if event ends before the end of the range, and it ends after the current hour
-        if (events.time !== undefined && (new Date(events[i].dtend)) < end && 
-          (new Date(events[i].dtend)) > hrDate){
+        if (events[i].time !== undefined && eDate < end && 
+            eDate > hrDate && eDate < hrDatep1){
           minOutside[h] += parseInt(events[i].time);
-        }else if ((new Date(events[i].dtend)) < end && (new Date(events[i].dtend)) > hrDate){
+        }else if (eDate < end && eDate > hrDate && eDate < hrDatep1){
           minOutside[h] += defaultMinOutside;
         }
 
         //handle pre_event (i==0 only), use dtstart instead
-        if (i == 0 && events.pre_time !== undefined && (new Date(events[i].dtstart)) < end && 
-          (new Date(events[i].dtstart)) > hrDate){
+        if (i == 0 && events[i].pre_time !== undefined && eDate < end && 
+            eDate > hrDate && eDate < hrDatep1){
           minOutside[h] += parseInt(events[i].pre_time);
-        }else if (i == 0 && (new Date(events[i].dtstart)) < end && (new Date(events[i].dtstart)) > hrDate){
+        }else if (i == 0 && eDate < end && eDate > hrDate && eDate < hrDatep1){
           minOutside[h] += defaultMinOutside;
         }
 
@@ -281,6 +290,7 @@ Inputs:
       }
 
       hrDate.setHours( hrDate.getHours() + 1);
+      hrDatep1.setHours( hrDatep1.getHours() + 1 );
     }
 
     console.log(minOutside);
@@ -325,6 +335,9 @@ Inputs:
       this.level = "shorts are good";
     }
 
-      //console.log("THIS IS THE LEVEL  " +  this.level);
+    console.log("THIS IS THE LEVEL  " +  this.level);
+
+    //set outfit
+    this.setOutfit(this.color);
   }
 }
