@@ -51,6 +51,8 @@ export class MyglobalsProvider {
             this.events = data;
 
             for(let i=0; i<this.events.length; i++){
+              this.events[i].dtstart = this.events[i].startDate;
+              this.events[i].dtend = this.events[i].endDate;
               this.events[i].startDate = (new Date(this.events[i].startDate)).toLocaleTimeString();;
               this.events[i].endDate = (new Date(this.events[i].endDate)).toLocaleTimeString();;
             }
@@ -69,7 +71,13 @@ export class MyglobalsProvider {
           }
         });
     } else {
-        this.events = [{title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo"},{title: "Event for the day",location: "Madison", startDate: "Today", endDate: "Tomo"}, {title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo"}];
+        let d1 = new Date(); d1.setHours(d1.getHours() + 1);
+        let d1e = new Date(); d1e.setHours(d1e.getHours() + 2);
+        let d2 = new Date(); d2.setHours(d2.getHours() + 3);
+        let d2e = new Date(); d2e.setHours(d2e.getHours() + 5);
+        let d3 = new Date(); d3.setHours(d3.getHours() + 7);
+        let d3e = new Date(); d3e.setHours(d3e.getHours() + 9);
+        this.events = [{title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo", dtstart: d1, dtend: d1e},{title: "Event for the day",location: "Madison", startDate: "Today", endDate: "Tomo", dtstart: d2, dtend: d2e}, {title: "Home",location: "Madison", startDate: "Today", endDate: "Tomo", dtstart: d3, dtend: d3e}];
     }
 
 
