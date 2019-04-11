@@ -1,10 +1,7 @@
 <ion-content padding>
 <h1>Set Settings</h1>
 <br>
-
-<!-- <div style="width:150px;height:50px;" id="my-login-button-target" (click)="snapKitInit()" ></div>-->
-
-<ion-list style="width: 85%;margin: auto;" radio-group [(ngModel)]="gender" (ngModelChange)="onChange($event)">
+<ion-list style="width: 85%;margin: auto;" radio-group [(ngModel)]="gender">
   <ion-label>Gender</ion-label>
     <ion-item>
         <ion-label>Male</ion-label>
@@ -17,11 +14,11 @@
     </ion-item>
 <br>
 <br>
-  <ion-row class="colorselect color_{{color}}">
+  <ion-row class="colorselect color_{{color.slice(1,7)}}">
     <ion-item>
-      <ion-label class="primarylabel">Character Select</ion-label>
+      <ion-label class="primarylabel">Skin Color</ion-label>
       <ion-select (click)="prepareColorSelector()" (ionChange)="setColor(this.color)" [(ngModel)]="color">
-        <ion-option style="height:100px;" (ionSelect)="selectColor(optioncolor)" *ngFor="let optioncolor of colors" [value]="optioncolor">{{optioncolor}}</ion-option>
+        <ion-option (ionSelect)="selectColor(optioncolor)" *ngFor="let optioncolor of colors" [value]="optioncolor">{{optioncolor}}</ion-option>
       </ion-select>
     </ion-item>
   </ion-row>
@@ -38,4 +35,5 @@
   <br>
   <button ion-button color="success" (click)="submit()">Submit</button>
 </ion-list>
+
 </ion-content>

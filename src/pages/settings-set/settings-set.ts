@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-
-declare var snap;
-declare var snapKitInit;
 
 @Component({
   selector: 'page-settings-set',
@@ -12,62 +9,16 @@ declare var snapKitInit;
 export class SettingsSetPage {
 
   gender: any;
-  colors: any;
-  colors_Men: Array<string> = ['270452214_2-s1', '270452208_2-s1','270452200_2-s1','270452176_2-s1','270452131_2-s1','270452117_2-s1','270452103_2-s1'];
-  colors_Women: Array<string> = ['270452106_2-s1','270452105_2-s1','270452098_2-s1','270452091_2-s1','270452076_2-s1','270452062_2-s1','270452058_2-s1'];
-  color: string = '270452214_2-s1';
+  colors: Array<string> = ['#d435a2', '#a834bf', '#6011cf', '#0d0e81', '#0237f1', '#0d8bcd', '#16aca4', '#3c887e', '#157145', '#57a773', '#88aa3d', '#b7990d', '#fcbf55', '#ff8668', '#ff5c6a', '#c2454c', '#c2183f', '#d8226b', '#8f2d56', '#482971', '#000000', '#561f37', '#433835', '#797979', '#819595'];
+  color: string = '#d435a2';
   notifications: any;
-  resp: any;
-  args:any;
-  link:any;
-  route:any;
 
-  constructor(public navCtrl: NavController, private storage: Storage, private navParams: NavParams) {
+  constructor(public navCtrl: NavController, private storage: Storage) {
     this.notifications = true;
     this.gender = 1;
-    this.colors = this.colors_Men;
-    this.args = navParams.get('args');
-
-    console.log("this is args", JSON.stringify(this.args));//.$link.fragment));
-
-
-    console.log("this is snap", snap);
-    console.log("this is init", snapKitInit);
   }
-
-  onChange(newValue) {
-      console.log(newValue);
-      if (newValue == 2) {
-        this.colors = this.colors_Women;
-        this.prepareColorSelector();
-      }
-      else{
-        this.colors = this.colors_Men;
-        this.prepareColorSelector();
-      }
-  }
-  snapKitInit() {
-    snapKitInit();
-     }
-
-submit(){
-
-  /*this.args.fetchUserInfo()
-    .then(data => {
-      console.log("this is this.resp2 ", data);
-      this.resp = data.data.me.bitmoji.avatar;
-      console.log("this is this.resp2 resp ", this.resp);
-    }).catch(err => console.log("this err: ",err.message));
-*/
-           this.storage.set('gender', this.gender);
-           this.storage.set('color', this.color);
-           this.storage.set('notifications', this.notifications);
-           this.navCtrl.pop();
-}
-
 
   prepareColorSelector() {
-
       setTimeout(() => {
         let buttonElements = document.querySelectorAll('div.alert-radio-group button');
         if (!buttonElements.length) {
@@ -78,28 +29,28 @@ submit(){
             let optionLabelElement = buttonElement.querySelector('.alert-radio-label');
             let color = optionLabelElement.innerHTML.trim();
 
-            //if (this.isHexColor(color)) {
-              buttonElement.classList.add('colorselect', 'color_' + color);
-              //if (color == this.color) {
-              //  buttonElement.classList.add('colorselected');
-              //}
-            //}
+            if (this.isHexColor(color)) {
+              buttonElement.classList.add('colorselect', 'color_' + color.slice(1, 7));
+              if (color == this.color) {
+                buttonElement.classList.add('colorselected');
+              }
+            }
           }
         }
       }, 100);
 }
 
-/*isHexColor(color) {
+isHexColor(color) {
     let hexColorRegEx = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
     return hexColorRegEx.test(color);
-}*/
+}
 
 selectColor(color) {
 let buttonElements = document.querySelectorAll('div.alert-radio-group button.colorselect');
 for (let index = 0; index < buttonElements.length; index++) {
   let buttonElement = buttonElements[index];
   buttonElement.classList.remove('colorselected');
-  if (buttonElement.classList.contains('color_' + color)) {
+  if (buttonElement.classList.contains('color_' + color.slice(1, 7))) {
     buttonElement.classList.add('colorselected');
   }
 }
@@ -110,6 +61,13 @@ console.log('Selected Color is', color);
 
 }
 
+submit(){
 
+      this.storage.set('gender', this.gender);
+      this.storage.set('color', this.color);
+      this.storage.set('notifications', this.notifications);
+
+      this.navCtrl.pop();
+}
 
 }

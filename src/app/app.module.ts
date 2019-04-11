@@ -9,7 +9,6 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsSetPage } from '../pages/settings-set/settings-set';
-import { CalendarSetPage } from '../pages/calendar-set/calendar-set';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -17,8 +16,6 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClientModule } from '@angular/common/http';
 import { Calendar } from '@ionic-native/calendar';
 import { IonicStorageModule } from '@ionic/storage';
-import { MyglobalsProvider } from '../providers/myglobals/myglobals';
-import { Deeplinks } from '@ionic-native/deeplinks';
 
 
 
@@ -29,8 +26,7 @@ import { Deeplinks } from '@ionic-native/deeplinks';
     ContactPage,
     HomePage,
     TabsPage,
-    SettingsSetPage,
-    CalendarSetPage
+    SettingsSetPage
   ],
   imports: [
     BrowserModule,
@@ -45,17 +41,14 @@ import { Deeplinks } from '@ionic-native/deeplinks';
     ContactPage,
     HomePage,
     TabsPage,
-    SettingsSetPage,
-    CalendarSetPage
+    SettingsSetPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Calendar,
-    MyglobalsProvider,
-    Deeplinks
+    Calendar
   ]
 })
 export class AppModule {}

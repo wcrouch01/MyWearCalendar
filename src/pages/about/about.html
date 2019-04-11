@@ -2,51 +2,14 @@
 
 <h1>Calendar</h1>
 
-  <div *ngFor="let e of events; let i=index">
-
-    <div *ngIf="i == 0 && e.pre_transport===undefined" class="outer" (click)="this.editTransport(-1)">
-      <div class="btn">
-        <ion-icon class="add-button" name="add"></ion-icon>
-      </div>
-    </div>
-
-    <div *ngIf="i == 0 && e.pre_transport!==undefined" (click)="this.editTransport(-1)">
-      <div class="outer">
-        <div class="inner">
-          <ion-icon class="transp-icon" name={{e.pre_transport}}></ion-icon>
-          <ion-label><h6>Time outside: {{e.pre_time}} minutes</h6></ion-label>
-        </div>
-      </div>
-    </div>
-
-    <ion-card>
-
-      <ion-card-header>
-      <ion-card-title>{{e.title}}</ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        {{e.location}}
-        {{e.startDate}} to {{e.endDate}}      
-      </ion-card-content>
-      
-    </ion-card>
-
-    <div *ngIf="e.transport===undefined" class="outer" (click)="this.editTransport(i)">
-      <div class="btn">
-        <ion-icon class="add-button" name="add"></ion-icon>
-      </div>
-    </div>
-
-    <div *ngIf="e.transport!==undefined" (click)="this.editTransport(i)">
-      <div class="outer">
-        <div class="inner">
-          <ion-icon class="transp-icon" name={{e.transport}}></ion-icon>
-          <ion-label><h6>Time outside: {{e.time}} minutes</h6></ion-label>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
+  <ion-card  *ngFor="let e of events; let i=index">
+    <ion-card-header>
+    <ion-card-title>{{e.title}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{e.location}}
+      {{e.startDate}} to {{e.endDate}}
+    </ion-card-content>
+    <div *ngIf="i != events.length-1" class="btn" (click)="this.test()"><ion-icon class="add-button" name="add"></ion-icon></div>
+  </ion-card>
 </ion-content>

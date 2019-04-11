@@ -1,14 +1,10 @@
 <ion-content padding>
-  <ion-card [ngStyle]="{ 'background-image' : gradient}">
-    <ion-card-content >
-
+  <ion-card>
+    <ion-card-content>
+      What to Wear Today?
     </ion-card-content>
     <ion-card-header>
-    <img src={{level}} style="height: 300px;width: auto;padding-left: 15px;" >
-    <div class="gif"></div>
-    <div class="temp">
-      45
-    </div>
+    <h1>{{level}}</h1>
     </ion-card-header>
   </ion-card>
   <ion-card>
@@ -19,6 +15,5 @@
     <ion-card-title>{{weatherLocal}}</ion-card-title>
     </ion-card-header>
   </ion-card>
-
 
 </ion-content>
