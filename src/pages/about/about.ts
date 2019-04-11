@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, Platform  } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
+import { Storage } from '@ionic/storage';
+import { CalendarSetPage } from '../calendar-set/calendar-set';
+import { MyglobalsProvider } from '../../providers/myglobals/myglobals';
 
 @Component({
   selector: 'page-about',
@@ -12,46 +15,46 @@ export class AboutPage {
   IOSevent: boolean;
   calendars: any;
 
-  constructor(public navCtrl: NavController, private calendar: Calendar, private platform: Platform) {
+  constructor(public navCtrl: NavController, private calendar: Calendar, private platform: Platform,
+    public global: MyglobalsProvider, private storage: Storage) {
       this.IOSevent = true;
+
+      //get global events
+      this.events = this.global.events;
+
   }
 
   ionViewDidEnter(){
-    let start = new Date();
-    let end = new Date();
-    end.setDate(end.getDate() + 1 );
+    console.log('ionViewDidLoad CalendarPage');
 
-    if (this.platform.is('ios')) {
-
-        this.calendar.findEvent('', '', '',start, end)
-        .then(data => {
-            console.log(data.length);
-            console.log(JSON.stringify(data));
-            console.log('results', JSON.stringify(data, null, '\t'));
-            console.log(start, end);
-            if (data.length <= 0){
-              this.IOSevent = false;
-            }
-            else{
-              this.events = data;
-              this.IOSevent = true;
-
-            }
-
-        }, err => {
-            console.error('err', err);
-            this.IOSevent = false;
-        });
-
-    } else if (this.platform.is('android')) {
-        this.calendar.listEventsInRange(start, end).then(data => {
-          this.events = data;
-        });
-    } else {
-        this.events = [{title: "NEW TITLE",location: "Madison", startDate: "Today", endDate: "Tomo"},{title: "NEW TITLE",location: "Madison", startDate: "Today", endDate: "Tomo"}];
-    }
+    //load events if they don't exist yet
+    this.global.loadAll();
   }
 
-  test(){}
+
+  editTransport(i){
+
+    i = parseInt(i);
+
+    if (i == this.events.length-1){
+      this.navCtrl.push(CalendarSetPage, {
+        from: this.events[i].title,
+        ind: i
+      });
+    }else if (i == -1){
+      this.navCtrl.push(CalendarSetPage, {
+        to: this.events[0].title,
+        ind: 0
+      });
+    }else{
+      this.navCtrl.push(CalendarSetPage, {
+        from: this.events[i].title,
+        to: this.events[i+1].title,
+        ind: i
+      });
+    }
+    
+  }
+
 
 }

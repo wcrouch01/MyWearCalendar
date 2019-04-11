@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,  NavParams } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClient } from '@angular/common/http';
 import { Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SettingsSetPage } from '../settings-set/settings-set';
+import { MyglobalsProvider } from '../../providers/myglobals/myglobals';
 
 interface apiResponse {
     "@context": any,
@@ -19,40 +20,127 @@ interface apiResponse {
 })
 export class HomePage {
 
- weatherLocal: any;
-hourlyReport: [any];
-level : string = "";
+  weatherLocal: any;
+  hourlyReport: [any];
+  level : string = "";
+  gender: any;
+  temperature: any;
+  graphic: any;
+  shortForecast: any;
+  color: any;
+  notifications: any;
+  gradient:any;
+  outfit: string;
 
   constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient,
-    private platform: Platform, private storage: Storage ) {
+    private platform: Platform, public navParams: NavParams, private storage: Storage, public global: MyglobalsProvider) {
+
+      this.gradient = "linear-gradient(#fffba4,#019dc5)";
 
     this.storage.get('gender').then((val) => {
     console.log('Your gender is', val);
-    if (val == null) {
+    this.gender = val;
+    if ( val == null) {
       this.navCtrl.push(SettingsSetPage);
     }
     });
+
+
+    this.storage.get('color').then((val) => {
+    this.color = val;
+    this.setOutfit(this.color);
+    //this.level = "https://render.bitstrips.com/render/10215854/" + this.color + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=300";
+    console.log('Your character is', this.outfit);
+    });
+
+  }
+
+ ionViewWillEnter() {
+   if (this.color == null) {
+     this.color = this.navParams.get('thing1')|| null;
+   }
+   this.setOutfit(this.color);
+ }
+
+  setOutfit(val){
+    if (this.level == "wear coat, bundle up"){
+      if (this.gender == 2) { //women outfit
+          this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=944137&head_rotation=0&body_rotation=0&width=300')"
+      }
+      else{
+          this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=300')"
+      }
+    }
+    else if (this.level == "wear pants, light jacket"){
+      if (this.gender == 2) {
+          this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=957114&head_rotation=0&body_rotation=0&width=300')"
+      }
+      else{
+          this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=962366&head_rotation=0&body_rotation=0&width=300')"
+      }
+    }
+    else{ //this.level = "shorts are good";
+      if (this.gender == 2) {
+          this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=889503&head_rotation=0&body_rotation=0&width=300')"
+      }
+      else{
+          this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=1017606&head_rotation=0&body_rotation=0&width=300')"
+      }
+      }
   }
 
   ionViewDidEnter(){
+
 		this.platform.ready().then(() => {
 			console.log("Device is ready! View did enter!");
 			let options = {
 				enableHighAccuracy: true,
-				timeout: 10000,
+				timeout: 100000,
         maximumAge: 0
 			}
 			this.geolocation.getCurrentPosition(options).then((resp) => {
 				console.log("My position: " + resp.coords.latitude + ", " + resp.coords.longitude);
 
+        //this.storage.set('lat', resp.coords.latitude);
+        //this.storage.set('long', resp.coords.longitude);
         var apiCall = "https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast/hourly"
-         console.log(apiCall);
+         //console.log(apiCall);
            this.http.get<apiResponse>(apiCall).subscribe((response) => {
-            console.log(response);
+            //console.log(response);
              this.hourlyReport = response.properties.periods;
-             console.log(response.properties.periods);
+             //console.log(response.properties.periods);
              this.weatherLocal = response.properties.periods[0].temperature;
              this.whatToWear();
+          }, err => {
+            this.weatherLocal = err;
+        });
+
+        var apiCall2 = "https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast"
+         //console.log(apiCall);
+           this.http.get<apiResponse>(apiCall2).subscribe((response) => {
+            console.log("apiCall2" , response.properties.periods[0]);
+             this.temperature = response.properties.periods[0].temperature;
+             //console.log(response.properties.periods);
+             this.shortForecast = response.properties.periods[0].shortForecast;
+
+              if (this.shortForecast.includes("Thunder") || this.shortForecast.includes("thunder")) {
+               this.graphic = "url('../../assets/icon/thunder.svg')";
+               this.gradient = "linear-gradient(#76787b,#007bcb, #002856)";
+             }else if (this.shortForecast.includes("Snow") || this.shortForecast.includes("snow")) {
+                 this.graphic = "url('../../assets/icon/snowy-1.svg')";
+                 this.gradient = "linear-gradient(#949598,#0060b5)";
+             }else if (this.shortForecast.includes("Rain") || this.shortForecast.includes("rain") || this.shortForecast.includes("Sleet")) {
+                 this.graphic = "url('../../assets/icon/rainy-1.svg')";
+                 this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+             }else if (this.shortForecast.includes("Cloud") || this.shortForecast.includes("cloud")) {
+               this.graphic = "url('../../assets/icon/cloudy.svg')";
+               this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+             }else{
+               this.graphic = "url('../../assets/icon/cloudy-day-1.svg')";
+               this.gradient = "linear-gradient(#fffba4,#019dc5)";
+             }
+             console.log(this.temperature + " , " + this.shortForecast);
+
           }, err => {
             this.weatherLocal = err;
         });
@@ -61,8 +149,20 @@ level : string = "";
 				console.log("Error getting location Code: " + error.code + ", Message: " + error.message);
 			});
 		});
-	}
 
+    //https://ionicframework.com/docs/v3/native/native-geocoder/ can be used to translate a string city to coordinates.
+
+    //Design idea: on home use gradient as background for rhe item card (downloads/5829ee36918eb80664d5a09f.jpeg) and use gif or annimated icon to display weather conditions
+    //to get weather conditions use the api call https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast
+    //the response in periods[0].shortForecast we will get a string of weather conditions that should be used to determine graphic.
+
+    //load events provider
+    this.global.loadAll();
+  }
+
+  markLocation(){
+    console.log("IN MARKLOCATION");
+  }
 /*
 Inputs:
 
@@ -111,60 +211,133 @@ Inputs:
   Alg:
 */
 
-    whatToWear() {
-      console.log("IN WHAT TO WEAR()");
-      //Find #min outside for each hour of the day
-    //  for each hour of the day (h):
-      //  for each cal item (x):
-      //    if items[x].time between hour && hour+1:
-      //      if rain[h] > 50%:
-      //        umbrella = true
-      //      if items [x].transportation is outside (walk/bike)
-      //        minOutside[h] += items[x].duration
-      //      else if items[x] is Bus/Subway
-        //      minOutside[h] += walkToBus
-        //    else (if items[x] is Car -- can just be else)
-        //      minOutside[h] += walkToCar
+  whatToWear() {
+    console.log("IN WHAT TO WEAR()");
 
-      var tempL1 = 39;//*= toleranceCold
-      var tempL2 = 61;//*= toleranceWarm
-      var minColdNeedCoat = 4;
-      var minCoolNeedJacket = 10;
-      var minLevel1= 0;
-      var minLevel2= 0;
-      var minLevel3= 0;
-      var minOutside= [1,1,1,1,1,1,1];
-      var toleranceCold = 1;
-      var toleranceWarm = 1;
-      //Find #min outside at each temperature level
-      for(var i=0;i<7;i++){
-        console.log("IN FOR LOOP()");
-        console.log(this.hourlyReport[i].temperature);
-        if (this.hourlyReport[i].temperature < tempL1){
-          minLevel1 += 1;//minOutside[i];
-        }
-        if(this.hourlyReport[i].temperature < tempL2){
-          minLevel2 += 1;//minOutside[i];
-        }
-        else{
-          minLevel3 += 1;
-        }
-      }
-      //Calculate "level" based on minutes spent at each level, this is the secret sauce (maybe?)
-      //This doesn't consider if time spent is continuous or not... Do we care?
-      console.log(minLevel1);
-      console.log(minLevel2);
-      console.log(minLevel3);
-      if (minLevel1 > minColdNeedCoat * toleranceCold){
-        this.level = "wear coat, bundle up";
-      }
-      else if (minLevel2 > minCoolNeedJacket * toleranceWarm){
-        this.level = "wear pants, light jacket";
-      }
-      else{
-        this.level = "shorts are good";
-        }
+    //get events (including transportation) from calendar page (it is loaded)
+    var events = this.global.events;
 
-        console.log("THIS IS THE LEVEL  " +  this.level);
+    //Find #min outside for each hour of the day
+  //  for each hour of the day (h):
+    //  for each cal item (x):
+    //    if items[x].time between hour && hour+1:
+    //      if rain[h] > 50%:
+    //        umbrella = true
+    //      if items [x].transportation is outside (walk/bike)
+    //        minOutside[h] += items[x].duration
+    //      else if items[x] is Bus/Subway
+      //      minOutside[h] += walkToBus
+      //    else (if items[x] is Car -- can just be else)
+      //      minOutside[h] += walkToCar
+
+
+    //CONSTANTS
+    var tempL1 = 39;
+    var tempL2 = 61;
+    var minColdNeedCoat = 4;
+    var minCoolNeedJacket = 10;
+
+    //from storage
+    var toleranceCold = 1;
+    var toleranceWarm = 1;
+    
+    //get these somehow (from UI or settings?)
+    var defaultMinOutside:number = 5; //from settings?
+    var numHours:number = 18; // the number of hours we want to look at
+
+    //set hour array
+    var minOutside:number[] = new Array(numHours);  
+    for(let h=0; h<numHours; h++){
+      minOutside[h] = 0;
     }
+
+    //get now, and the time when we are done (end)
+    //let now = new Date();
+    let end = new Date();
+    let hrDate = new Date();
+    let hrDatep1 = new Date();
+    end.setHours( end.getHours() + numHours );
+    hrDatep1.setHours( hrDatep1.getHours() + 1 );
+
+    for(let h=0; h<numHours; h++){
+
+      for(let i=0; i<events.length; i++){
+
+        //console.log("DOING: hour "+h);
+        //console.log("dtend: "+(new Date(events[i].dtend)) + " end "+end+" hrDate "+hrDate + " now "+now);
+        //console.log((new Date(events[i].dtend)) < end);
+        //console.log((new Date(events[i].dtend)) > hrDate);
+
+        let eDate = new Date(events[i].dtend);
+
+        //if event ends before the end of the range, and it ends after the current hour
+        if (events[i].time !== undefined && eDate < end && 
+            eDate > hrDate && eDate < hrDatep1){
+          minOutside[h] += parseInt(events[i].time);
+        }else if (eDate < end && eDate > hrDate && eDate < hrDatep1){
+          minOutside[h] += defaultMinOutside;
+        }
+
+        //handle pre_event (i==0 only), use dtstart instead
+        if (i == 0 && events[i].pre_time !== undefined && eDate < end && 
+            eDate > hrDate && eDate < hrDatep1){
+          minOutside[h] += parseInt(events[i].pre_time);
+        }else if (i == 0 && eDate < end && eDate > hrDate && eDate < hrDatep1){
+          minOutside[h] += defaultMinOutside;
+        }
+
+
+      }
+
+      hrDate.setHours( hrDate.getHours() + 1);
+      hrDatep1.setHours( hrDatep1.getHours() + 1 );
+    }
+
+    console.log(minOutside);
+
+    //adjust temps given the tolerance
+    tempL1 *= toleranceCold;
+    tempL2 *= toleranceWarm;
+
+    //get number of minutes in each temperature range
+    var minLevel1:number= 0;
+    var minLevel2:number= 0;
+    var minLevel3:number= 0;
+
+    //Find #min outside at each temperature level
+    for(let h=0; h<numHours; h++){
+      if (this.hourlyReport[h].temperature < tempL1){
+        console.log("adding "+minOutside[h]);
+        minLevel1 += minOutside[h];
+      }
+      else if (this.hourlyReport[h].temperature < tempL2){
+        minLevel2 += minOutside[h];
+      }
+      else {
+        minLevel3 += minOutside[h];
+      }
+    }
+
+    //Calculate "level" based on minutes spent at each level, this is the secret sauce (maybe?)
+    //This doesn't consider if time spent is continuous or not... Do we care?
+    console.log("LEVEL 1-3 minutes:");
+    console.log(minLevel1);
+    console.log(minLevel2);
+    console.log(minLevel3);
+    //should we adjust by tolerance? We are already factoring this once
+    if (minLevel1 > minColdNeedCoat * toleranceCold){
+      this.level = "wear coat, bundle up";
+    }
+    else if (minLevel2 > minCoolNeedJacket * toleranceWarm){
+      this.level = "wear pants, light jacket";
+    }
+    else{
+      this.level = "shorts are good";
+    }
+
+    console.log("THIS IS THE LEVEL  " +  this.level);
+
+    //set outfit
+    this.setOutfit(this.color);
+  }
 }
