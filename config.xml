@@ -103,6 +103,9 @@
         <variable name="DEEPLINK_HOST" value="example.com" />
         <variable name="ANDROID_PATH_PREFIX" value="/" />
     </plugin>
+    <plugin name="cordova-plugin-nativegeocoder" spec="^3.2.1">
+        <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Use geocoder service" />
+    </plugin>
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="7.1.4" />
 </widget>
