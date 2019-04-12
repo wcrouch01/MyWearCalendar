@@ -16,7 +16,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
   <!-- cordova.js required for cordova apps (remove if not needed) -->
-  <script type="application/javascript" src="cordova.js"></script>
+  <script src="cordova.js"></script>
+  <script src="/assets/js/snap.js"></script>
 
   <!-- un-comment this code to enable service worker
   <script>
@@ -34,16 +35,17 @@
 
   <!-- Ionic's root component and where the app will load -->
   <ion-app></ion-app>
+  <script src="/assets/js/init.js"></script>
 
   <!-- The polyfills js is generated during the build process -->
-  <script type="application/javascript" src="build/polyfills.js"></script>
+  <script src="build/polyfills.js"></script>
 
   <!-- The vendor js is generated during the build process
        It contains all of the dependencies in node_modules -->
-  <script type="application/javascript" src="build/vendor.js"></script>
+  <script src="build/vendor.js"></script>
 
   <!-- The main bundle js is generated during the build process -->
-  <script type="application/javascript" src="build/main.js"></script>
+  <script src="build/main.js"></script>
 
 </body>
 </html>

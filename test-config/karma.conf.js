@@ -1,9 +1,9 @@
+
 var webpackConfig = require('./webpack.test.js');
 
 module.exports = function(config) {
   var _config = {
     basePath: '../',
-
     frameworks: ['jasmine'],
 
     files: [
@@ -59,4 +59,11 @@ module.exports = function(config) {
   };
 
   config.set(_config);
+  config.set({
+  client: {
+    jasmine: {
+      random: false
+    }
+  }
+})
 };

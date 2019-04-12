@@ -9,10 +9,7 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
-    "appium": "appium",
-    "appium-doctor": "appium-doctor",
-    "test-coverage": "karma start ./test-config/karma.conf.js --coverage",
-    "test": "wdio tests/wdio.conf.js"
+    "test": "karma start ./test-config/karma.conf.js --coverage"
   },
   "dependencies": {
     "@angular/animations": "5.2.11",
@@ -26,50 +23,62 @@
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/calendar": "^4.20.0",
     "@ionic-native/core": "~4.18.0",
+    "@ionic-native/deeplinks": "^4.20.0",
     "@ionic-native/geolocation": "^4.20.0",
+    "@ionic-native/in-app-browser": "^5.3.0",
+    "@ionic-native/native-geocoder": "^4.20.0",
     "@ionic-native/splash-screen": "~4.18.0",
     "@ionic-native/status-bar": "~4.18.0",
     "@ionic/storage": "2.2.0",
-    "acorn": "^6.1.1",
     "cordova-android": "7.1.4",
     "cordova-ios": "4.5.5",
+    "cordova-plugin-add-swift-support": "^1.7.2",
     "cordova-plugin-calendar": "^5.1.4",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^3.1.2",
+    "cordova-plugin-nativegeocoder": "^3.2.1",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
     "cordova-plugin-whitelist": "^1.3.3",
     "ionic-angular": "3.9.3",
+    "ionic-plugin-deeplinks": "^1.0.19",
     "ionicons": "3.0.0",
-    "karma": "^4.0.1",
-    "karma-coverage": "^1.1.2",
-    "karma-sourcemap-loader": "^0.3.7",
-    "nyc": "^13.3.0",
+    "nativescript": "^5.3.1",
     "rxjs": "5.5.11",
     "sw-toolbox": "3.6.0",
-    "webpack-dev-server": "^3.3.1",
     "zone.js": "0.8.29"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "^3.2.3",
-    "appium": "^1.12.1",
-    "appium-doctor": "^1.9.0",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "istanbul-instrumenter-loader": "^3.0.1",
+    "@angular/cli": "1.4.8",
+    "@ionic/app-scripts": "3.2.1",
+    "@types/jasmine": "^2.5.41",
+    "@types/node": "^8.0.45",
+    "angular2-template-loader": "^0.6.2",
+    "html-loader": "^0.5.1",
+    "ionic-mocks": "^1.3.0",
+    "istanbul-instrumenter-loader": "^3.0.0",
+    "jasmine": "^3.4.0",
+    "jasmine-core": "^3.4.0",
+    "jasmine-spec-reporter": "^4.1.0",
+    "karma": "^4.0.1",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage-istanbul-reporter": "^2.0.5",
+    "karma-coverage": "^1.1.2",
+    "karma-coverage-istanbul-reporter": "^1.3.0",
+    "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "^2.0.1",
-    "karma-jasmine-html-reporter": "^1.4.0",
-    "karma-webpack": "^3.0.5",
-    "typescript": "~2.6.2",
-    "wdio-appium-service": "^0.2.3",
-    "wdio-jasmine-framework": "^0.3.8",
-    "wdio-spec-reporter": "^0.1.5",
-    "webdriverio": "^4.14.4",
-    "webpack": "^4.29.6"
+    "karma-jasmine-html-reporter": "^1.2.0",
+    "karma-safari-launcher": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^2.0.3",
+    "null-loader": "^0.1.1",
+    "protractor": "^5.1.1",
+    "ts-loader": "^3.0.3",
+    "ts-node": "^3.0.2",
+    "typescript": "^2.9.2"
   },
   "description": "An Ionic project",
   "cordova": {
@@ -87,11 +96,34 @@
       "cordova-plugin-calendar": {
         "CALENDAR_USAGE_DESCRIPTION": " ",
         "CONTACTS_USAGE_DESCRIPTION": " "
+      },
+      "cordova-plugin-inappbrowser": {},
+      "ionic-plugin-deeplinks": {
+        "URL_SCHEME": "wearcalendar",
+        "DEEPLINK_SCHEME": "https",
+        "DEEPLINK_HOST": "example.com",
+        "ANDROID_PATH_PREFIX": "/"
+      },
+      "cordova-plugin-nativegeocoder": {
+        "LOCATION_WHEN_IN_USE_DESCRIPTION": "Use geocoder service"
       }
     },
     "platforms": [
       "ios",
       "android"
     ]
+  },
+  "main": "my.conf.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Giannmit/MyWearCalendar.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Giannmit/MyWearCalendar/issues"
   }
 }

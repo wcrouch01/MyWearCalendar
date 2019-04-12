@@ -1,19 +1,32 @@
 <ion-content padding>
-  <ion-card>
-    <ion-card-content>
-      What to Wear Today?
+  <ion-card [ngStyle]="{ 'background-image' : gradient}">
+    <ion-card-content >
+
     </ion-card-content>
     <ion-card-header>
-    <h1>{{level}}</h1>
+      <div class="tempL">
+        Current/High
+      </div>
+      <div class="temp">
+        {{weatherLocal}}/{{temperature}}
+      </div>
+      <div [ngStyle]="{ 'background-image' : graphic}" class="gif"></div>
+      <div [ngStyle]="{ 'background-image' : outfit}" style="height: 300px;width: auto;padding-left: 15px;background-repeat: no-repeat;background-size:contain;" ></div>
     </ion-card-header>
   </ion-card>
   <ion-card>
-    <ion-card-content>
-      Temperature Now
-    </ion-card-content>
-    <ion-card-header>
-    <ion-card-title>{{weatherLocal}}</ion-card-title>
+    <ion-card-header (click)='markLocation()'>
+      <ion-card-title>Set New Location</ion-card-title>
+      <ion-icon class="graphic" name="locate"></ion-icon>
     </ion-card-header>
+
+    <ion-card-content *ngIf="dropdown">
+      <p>Traveling? Input a new city to change the output above</p>
+        <ion-input placeholder="City or ZipCode" [(ngModel)]="newLoc"></ion-input>
+        <button ion-button light (click)='setNewLocation()' >Change Location</button>
+      </ion-card-content>
+
   </ion-card>
+
 
 </ion-content>

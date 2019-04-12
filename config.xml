@@ -5,6 +5,7 @@
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
     <access origin="*" />
+    <allow-navigation href="https://accounts.snapchat.com/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -41,6 +42,7 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <allow-navigation href="https://accounts.snapchat.com/*" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
@@ -93,6 +95,16 @@
     <plugin name="cordova-plugin-calendar" spec="^5.1.4">
         <variable name="CALENDAR_USAGE_DESCRIPTION" value=" " />
         <variable name="CONTACTS_USAGE_DESCRIPTION" value=" " />
+    </plugin>
+    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
+    <plugin name="ionic-plugin-deeplinks" spec="^1.0.19">
+        <variable name="URL_SCHEME" value="wearcalendar" />
+        <variable name="DEEPLINK_SCHEME" value="https" />
+        <variable name="DEEPLINK_HOST" value="example.com" />
+        <variable name="ANDROID_PATH_PREFIX" value="/" />
+    </plugin>
+    <plugin name="cordova-plugin-nativegeocoder" spec="^3.2.1">
+        <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Use geocoder service" />
     </plugin>
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="7.1.4" />
