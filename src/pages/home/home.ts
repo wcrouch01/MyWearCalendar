@@ -151,7 +151,7 @@ export class HomePage {
     var apiCall = "https://api.weather.gov/points/"+ lat +","+ long +"/forecast/hourly"
      //console.log(apiCall);
        this.http.get<apiResponse>(apiCall).subscribe((response) => {
-        //console.log(response);
+        //console.log("apiCall1",response);
          this.hourlyReport = response.properties.periods;
          //console.log(response.properties.periods);
          this.weatherLocal = response.properties.periods[0].temperature;
@@ -163,7 +163,7 @@ export class HomePage {
     var apiCall2 = "https://api.weather.gov/points/"+ lat +","+ long +"/forecast"
      //console.log(apiCall);
        this.http.get<apiResponse>(apiCall2).subscribe((response) => {
-        console.log("apiCall2" , response.properties.periods[0]);
+        //console.log("apiCall2" , response.properties.periods[0]);
          this.temperature = response.properties.periods[0].temperature;
          //console.log(response.properties.periods);
          this.shortForecast = response.properties.periods[0].shortForecast;
@@ -259,35 +259,101 @@ Inputs:
       //    else (if items[x] is Car -- can just be else)
       //      minOutside[h] += walkToCar
 
-    var tempL1 = 39;//*= toleranceCold
-    var tempL2 = 61;//*= toleranceWarm
+
+    //CONSTANTS
+    var tempL1 = 39;
+    var tempL2 = 61;
     var minColdNeedCoat = 4;
     var minCoolNeedJacket = 10;
-    var minLevel1= 0;
-    var minLevel2= 0;
-    var minLevel3= 0;
-    var minOutside= [1,1,1,1,1,1,1];
+
+    //from storage
     var toleranceCold = 1;
     var toleranceWarm = 1;
+    
+    //get these somehow (from UI or settings?)
+    var defaultMinOutside:number = 5; //from settings?
+    var numHours:number = 18; // the number of hours we want to look at
+
+    //set hour array
+    var minOutside:number[] = new Array(numHours);  
+    for(let h=0; h<numHours; h++){
+      minOutside[h] = 0;
+    }
+
+    //get now, and the time when we are done (end)
+    //let now = new Date();
+    let end = new Date();
+    let hrDate = new Date();
+    let hrDatep1 = new Date();
+    end.setHours( end.getHours() + numHours );
+    hrDatep1.setHours( hrDatep1.getHours() + 1 );
+
+    for(let h=0; h<numHours; h++){
+
+      for(let i=0; i<events.length; i++){
+
+        //console.log("DOING: hour "+h);
+        //console.log("dtend: "+(new Date(events[i].dtend)) + " end "+end+" hrDate "+hrDate + " now "+now);
+        //console.log((new Date(events[i].dtend)) < end);
+        //console.log((new Date(events[i].dtend)) > hrDate);
+
+        let eDate = new Date(events[i].dtend);
+
+        //if event ends before the end of the range, and it ends after the current hour
+        if (events[i].time !== undefined && eDate < end && 
+            eDate > hrDate && eDate < hrDatep1){
+          minOutside[h] += parseInt(events[i].time);
+        }else if (eDate < end && eDate > hrDate && eDate < hrDatep1){
+          minOutside[h] += defaultMinOutside;
+        }
+
+        //handle pre_event (i==0 only), use dtstart instead
+        if (i == 0 && events[i].pre_time !== undefined && eDate < end && 
+            eDate > hrDate && eDate < hrDatep1){
+          minOutside[h] += parseInt(events[i].pre_time);
+        }else if (i == 0 && eDate < end && eDate > hrDate && eDate < hrDatep1){
+          minOutside[h] += defaultMinOutside;
+        }
+
+
+      }
+
+      hrDate.setHours( hrDate.getHours() + 1);
+      hrDatep1.setHours( hrDatep1.getHours() + 1 );
+    }
+
+    console.log(minOutside);
+
+    //adjust temps given the tolerance
+    tempL1 *= toleranceCold;
+    tempL2 *= toleranceWarm;
+
+    //get number of minutes in each temperature range
+    var minLevel1:number= 0;
+    var minLevel2:number= 0;
+    var minLevel3:number= 0;
+
     //Find #min outside at each temperature level
-    for(var i=0;i<7;i++){
-      //console.log("IN FOR LOOP()");
-      //console.log(this.hourlyReport[i].temperature);
-      if (this.hourlyReport[i].temperature < tempL1){
-        minLevel1 += 1;//minOutside[i];
+    for(let h=0; h<numHours; h++){
+      if (this.hourlyReport[h].temperature < tempL1){
+        console.log("adding "+minOutside[h]);
+        minLevel1 += minOutside[h];
       }
-      if(this.hourlyReport[i].temperature < tempL2){
-        minLevel2 += 1;//minOutside[i];
+      else if (this.hourlyReport[h].temperature < tempL2){
+        minLevel2 += minOutside[h];
       }
-      else{
-        minLevel3 += 1;
+      else {
+        minLevel3 += minOutside[h];
       }
     }
+
     //Calculate "level" based on minutes spent at each level, this is the secret sauce (maybe?)
     //This doesn't consider if time spent is continuous or not... Do we care?
-    //console.log(minLevel1);
-    //console.log(minLevel2);
-    //console.log(minLevel3);
+    console.log("LEVEL 1-3 minutes:");
+    console.log(minLevel1);
+    console.log(minLevel2);
+    console.log(minLevel3);
+    //should we adjust by tolerance? We are already factoring this once
     if (minLevel1 > minColdNeedCoat * toleranceCold){
       this.level = "wear coat, bundle up";
     }
@@ -296,8 +362,11 @@ Inputs:
     }
     else{
       this.level = "shorts are good";
-      }
-      this.setOutfit(this.color);
-      console.log("THIS IS THE LEVEL  " +  this.level);
+    }
+
+    console.log("THIS IS THE LEVEL  " +  this.level);
+
+    //set outfit
+    this.setOutfit(this.color);
   }
 }

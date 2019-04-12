@@ -4,8 +4,11 @@
 
     </ion-card-content>
     <ion-card-header>
+      <div class="tempL">
+        Current/High
+      </div>
       <div class="temp">
-        {{temperature}}
+        {{weatherLocal}}/{{temperature}}
       </div>
       <div [ngStyle]="{ 'background-image' : graphic}" class="gif"></div>
       <div [ngStyle]="{ 'background-image' : outfit}" style="height: 300px;width: auto;padding-left: 15px;background-repeat: no-repeat;background-size:contain;" ></div>
@@ -19,7 +22,7 @@
 
     <ion-card-content *ngIf="dropdown">
       <p>Traveling? Input a new city to change the output above</p>
-        <ion-input placeholder="City,ZipCode" [(ngModel)]="newLoc"></ion-input>
+        <ion-input placeholder="City or ZipCode" [(ngModel)]="newLoc"></ion-input>
         <button ion-button light (click)='setNewLocation()' >Change Location</button>
       </ion-card-content>
 
