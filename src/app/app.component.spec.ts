@@ -3,6 +3,7 @@ import { IonicModule, Platform } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Deeplinks } from '@ionic-native/deeplinks';
 
 import { MyApp } from './app.component';
 import {
@@ -19,12 +20,13 @@ describe('MyApp Component', () => {
     TestBed.configureTestingModule({
       declarations: [MyApp],
       imports: [
-        IonicModule.forRoot(MyApp)
-      ],
+        IonicModule.forRoot(MyApp),
+              ],
       providers: [
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
-        { provide: Platform, useClass: PlatformMock }
+        { provide: Platform, useClass: PlatformMock },
+        Deeplinks
       ]
     })
   }));
@@ -33,13 +35,22 @@ describe('MyApp Component', () => {
     fixture = TestBed.createComponent(MyApp);
     component = fixture.componentInstance;
   });
-/*
+
   it('should be created', () => {
     expect(component instanceof MyApp).toBe(true);
   });
 
-  it('should have two pages', () => {
-    expect(component.pages.length).toBe(1);
+  //it('should have two pages', () => {
+  //  expect(component.pages.length).toBe(1);
+  //});
+
+
+  afterEach(() => {
+    TestBed.resetTestingModule();
   });
-*/
+
+  afterAll(() => {
+  TestBed.resetTestingModule();
+  });
+
 });
