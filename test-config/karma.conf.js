@@ -16,7 +16,8 @@ module.exports = function(config) {
         included: false,
         served: true,
         nocache: false
-      }
+      },
+      "tests/*.js"
     ],
 
     proxies: {
