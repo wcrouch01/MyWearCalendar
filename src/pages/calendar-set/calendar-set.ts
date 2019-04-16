@@ -63,7 +63,7 @@ export class CalendarSetPage {
   }
 
   ngOnInit(){
-    
+    console.log("hi");
   }
 
   async presentToast(m) {

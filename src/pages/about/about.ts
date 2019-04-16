@@ -36,20 +36,20 @@ export class AboutPage {
 
     i = parseInt(i);
 
-    if (i == this.events.length-1){
+    if (i == this.global.events.length-1){
       this.navCtrl.push(CalendarSetPage, {
-        from: this.events[i].title,
+        from: this.global.events[i].title,
         ind: i
       });
     }else if (i == -1){
       this.navCtrl.push(CalendarSetPage, {
-        to: this.events[0].title,
+        to: this.global.events[0].title,
         ind: 0
       });
     }else{
       this.navCtrl.push(CalendarSetPage, {
-        from: this.events[i].title,
-        to: this.events[i+1].title,
+        from: this.global.events[i].title,
+        to: this.global.events[i+1].title,
         ind: i
       });
     }

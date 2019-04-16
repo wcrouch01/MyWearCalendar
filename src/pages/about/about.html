@@ -2,7 +2,7 @@
 
 <h1>Calendar</h1>
 
-  <div *ngFor="let e of events; let i=index">
+  <div *ngFor="let e of global.events; let i=index">
 
     <div *ngIf="i == 0 && e.pre_transport===undefined" class="outer" (click)="this.editTransport(-1)">
       <div class="btn">
