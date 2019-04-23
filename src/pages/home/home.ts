@@ -138,7 +138,7 @@ export class HomePage {
       if ( val != null) {
         this.lastOpen = new Date(val);
         var now = new Date();
-        var diff = (now - this.lastOpen) / 3.6e6;
+        var diff = (Number(now) - this.lastOpen) / 3.6e6;
         console.log("last open found: "+this.lastOpen+" or hours ago: "+diff);
 
         //calculate 'Monday', 'Today', 'Yesterday'
