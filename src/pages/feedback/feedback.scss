@@ -1,3 +1,8 @@
 page-feedback {
 
+    //override title size so it fits
+    ion-card-title {
+        font-size: 20px !important;
+    }
+
 }

@@ -141,11 +141,11 @@ export class HomePage {
         var diff = (now - this.lastOpen) / 3.6e6;
         console.log("last open found: "+this.lastOpen+" or hours ago: "+diff);
 
+        //calculate 'Monday', 'Today', 'Yesterday'
         this.lastOpenStr = this.days[ this.lastOpen.getDay() ];
-
         if (this.lastOpen.getDay() == now.getDay()){
           this.lastOpenStr = "Today";
-        }else if (this.lastOpen.getDay() == now.getDay()){
+        }else if (this.lastOpen.getDay() == now.getDay()-1){
           this.lastOpenStr = "Yesterday";
         }
 
@@ -211,7 +211,7 @@ export class HomePage {
      //console.log(apiCall);
        this.http.get<apiResponse>(apiCall2).subscribe((response) => {
         //console.log("apiCall2" , response.properties.periods[0]);
-         this.temperature = response.properties.periods[0].temperature;
+         this.temperature = Math.max(response.properties.periods[0].temperature, response.properties.periods[1].temperature);
          //console.log(response.properties.periods);
          this.shortForecast = response.properties.periods[0].shortForecast;
 
@@ -243,24 +243,39 @@ export class HomePage {
   giveFeedback() {
 
     var now = new Date();
+    console.log(this.lastOpen);
     this.lastOpenStr = this.days[ this.lastOpen.getDay() ];
 
     if (this.lastOpen.getDay() == now.getDay()){
       this.lastOpenStr = "Today";
-    }else if (this.lastOpen.getDay() == now.getDay()){
+    }else if (this.lastOpen.getDay() == now.getDay()-1){
       this.lastOpenStr = "Yesterday";
+    }
+
+    var prefix = 'on ';
+    if (this.lastOpenStr == 'Today'){
+        prefix = "earlier ";
+    }else if (this.lastOpenStr == "Yesterday"){
+        prefix = "";
     }
 
     this.navCtrl.push(FeedbackPage, {
       lastOpen: this.lastOpen,
-      lastOpenStr: this.lastOpenStr
+      lastOpenStr: prefix+this.lastOpenStr
     });
   }
 
   async giveFeedbackAlert() {
+    var prefix = 'on ';
+    if (this.lastOpenStr == 'Today'){
+        prefix = "earlier ";
+    }else if (this.lastOpenStr == "Yesterday"){
+        prefix = "";
+    }
+
     const alert = await this.alertController.create({
       title: 'Provide Feedback?',
-      subTitle: 'We noticed you haven\'t rated MyWearCalendar\'s accuracy when you used the app on [date]. \
+      subTitle: 'We noticed you haven\'t rated MyWearCalendar\'s accuracy after using the app '+prefix+this.lastOpenStr+'. \
       By providing feedback, you make predictions more accurate in the future.',
       buttons: [
         {
