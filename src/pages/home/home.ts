@@ -1,13 +1,15 @@
 
 import { Component } from '@angular/core';
-import { NavController,  NavParams } from 'ionic-angular';
+import { NavController,  NavParams, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClient } from '@angular/common/http';
 import { Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SettingsSetPage } from '../settings-set/settings-set';
+import { FeedbackPage } from '../feedback/feedback';
 import { MyglobalsProvider } from '../../providers/myglobals/myglobals';
 import { NativeGeocoder, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
+import { not } from '@angular/compiler/src/output/output_ast';
 
 interface apiResponse {
     "@context": any,
@@ -35,18 +37,24 @@ export class HomePage {
   outfit: string;
   dropdown: boolean;
   newLoc: string;
+  lastOpen: any;
+  lastOpenStr: any;
+  days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient,
-    private platform: Platform, public navParams: NavParams, private storage: Storage, public global: MyglobalsProvider, private nativeGeocoder: NativeGeocoder) {
+    private platform: Platform, public navParams: NavParams, private storage: Storage, 
+    public global: MyglobalsProvider, private nativeGeocoder: NativeGeocoder, public alertController: AlertController) {
       this.dropdown = false;
       this.gradient = "linear-gradient(#fffba4,#019dc5)";
 
     this.storage.get('gender').then((val) => {
-    console.log('Your gender is', val);
-    this.gender = val;
-    if ( val == null) {
-      this.navCtrl.push(SettingsSetPage);
-    }
+      console.log('Your gender is', val);
+      this.gender = val;
+
+      //if you havent opened the app yet
+      if ( val == null) {
+        this.navCtrl.push(SettingsSetPage);
+      }
     });
 
 
@@ -56,6 +64,8 @@ export class HomePage {
     //this.level = "https://render.bitstrips.com/render/10215854/" + this.color + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=300";
     console.log('Your character is', this.outfit);
     });
+
+    //save the last time this app has loaded
 
   }
 
@@ -120,6 +130,43 @@ export class HomePage {
 
     //load events provider
     this.global.loadAll();
+
+    //ask for feedback if we have opened the app earlier and haven't given feedback
+    this.storage.get("lastOpen").then((val) => {
+      
+      //if there is a lastOpen value
+      if ( val != null) {
+        this.lastOpen = new Date(val);
+        var now = new Date();
+        var diff = (now - this.lastOpen) / 3.6e6;
+        console.log("last open found: "+this.lastOpen+" or hours ago: "+diff);
+
+        this.lastOpenStr = this.days[ this.lastOpen.getDay() ];
+
+        if (this.lastOpen.getDay() == now.getDay()){
+          this.lastOpenStr = "Today";
+        }else if (this.lastOpen.getDay() == now.getDay()){
+          this.lastOpenStr = "Yesterday";
+        }
+
+        //see if the app has been opened in less than x hours 
+        if (diff > 1 && diff < 168){
+          this.giveFeedbackAlert();
+          this.storage.set('lastOpen', (new Date()));
+        } 
+
+        //if app has been opened in less than 1 hour, assume just checking the weather
+        else if (diff >= 168){
+          this.storage.set('lastOpen', (new Date()));
+        }
+
+      }else{
+ 
+        //store first 'lastOpen' value
+        this.storage.set('lastOpen', (new Date()));
+        console.log("Set lastOpen: "+(new Date()));
+      }
+    });
   }
 
   markLocation(){
@@ -191,6 +238,52 @@ export class HomePage {
     });
 
   }
+
+  //called by HTML, pulls up page so the user can enter feedback with whitch we learn
+  giveFeedback() {
+
+    var now = new Date();
+    this.lastOpenStr = this.days[ this.lastOpen.getDay() ];
+
+    if (this.lastOpen.getDay() == now.getDay()){
+      this.lastOpenStr = "Today";
+    }else if (this.lastOpen.getDay() == now.getDay()){
+      this.lastOpenStr = "Yesterday";
+    }
+
+    this.navCtrl.push(FeedbackPage, {
+      lastOpen: this.lastOpen,
+      lastOpenStr: this.lastOpenStr
+    });
+  }
+
+  async giveFeedbackAlert() {
+    const alert = await this.alertController.create({
+      title: 'Provide Feedback?',
+      subTitle: 'We noticed you haven\'t rated MyWearCalendar\'s accuracy when you used the app on [date]. \
+      By providing feedback, you make predictions more accurate in the future.',
+      buttons: [
+        {
+          text: 'No',
+          role: 'no',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            this.giveFeedback();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
+
 
 /*
 Inputs:
@@ -335,8 +428,11 @@ Inputs:
 
     //Find #min outside at each temperature level
     for(let h=0; h<numHours; h++){
+      
+      //good line to uncomment for debugging alg
+      //console.log("Hour " +h+" temp "+this.hourlyReport[h].temperature + " min outside "+minOutside[h]);
+      
       if (this.hourlyReport[h].temperature < tempL1){
-        console.log("adding "+minOutside[h]);
         minLevel1 += minOutside[h];
       }
       else if (this.hourlyReport[h].temperature < tempL2){

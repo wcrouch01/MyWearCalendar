@@ -21,11 +21,18 @@
     </ion-card-header>
 
     <ion-card-content *ngIf="dropdown">
-      <p>Traveling? Input a new city to change the output above</p>
-        <ion-input placeholder="City or ZipCode" [(ngModel)]="newLoc"></ion-input>
-        <button ion-button light (click)='setNewLocation()' >Change Location</button>
-      </ion-card-content>
+      <p>Traveling? Input a new city or zip to change the prediction above</p>
+      <ion-input placeholder="City or ZipCode" [(ngModel)]="newLoc"></ion-input>
+      <button ion-button light (click)='setNewLocation()' >Change Location</button>
+    </ion-card-content>
 
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header (click)='giveFeedback()'>
+      <ion-card-title>Give User Feedback</ion-card-title>
+      <ion-icon class="graphic2" name="help"></ion-icon>
+    </ion-card-header>
   </ion-card>
 
 
