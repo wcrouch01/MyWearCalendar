@@ -32,7 +32,7 @@ export class HomePage {
   temperature: any;
   graphic: any;
   shortForecast: any;
-  color: any;
+  //color: any;
   notifications: any;
   gradient:any;
   outfit: string;
@@ -64,7 +64,7 @@ export class HomePage {
     //this.color = val;
     //this.setOutfit(val);
     //this.level = "https://render.bitstrips.com/render/10215854/" + this.color + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=300";
-    //console.log('Your character is', this.outfit);
+    //console.log('Your character is', this.global.outfit);
     //});
 
     //save the last time this app has loaded
@@ -109,12 +109,12 @@ export class HomePage {
   ionViewDidEnter(){
 
     this.storage.get('color').then((val) => {
-    this.color = val;
+    this.global.color = val;
     if (val == null) {
-      this.color = this.navParams.get('thing1')|| null;
+      this.global.color = this.navParams.get('thing1')|| null;
     }
     console.log('Your character is ' + val + " and the gender " + this.gender);
-    this.setOutfit(this.color);
+    this.setOutfit(this.global.color);
     });
 
     this.storage.get('gender').then((val) => {
@@ -128,7 +128,7 @@ export class HomePage {
 
 		this.platform.ready().then(() => {
 			console.log("Device is ready! View did enter!");
-      console.log(this.color);
+      console.log(this.global.color);
 			let options = {
 				enableHighAccuracy: true,
 				timeout: 100000,
@@ -306,7 +306,8 @@ export class HomePage {
     this.navCtrl.push(FeedbackPage, {
       lastOpen: this.lastOpen,
       lastOpenStr: prefix+this.lastOpenStr,
-      lastOpenLevel: lol
+      lastOpenLevel: 1,//this.lastOpenLevel,
+      lastOpenLevelStr: lol
     });
 
     //save current state as 'feedback'
@@ -428,9 +429,10 @@ Inputs:
     var minColdNeedCoat = 4;
     var minCoolNeedJacket = 10;
 
-    //from storage
-    var toleranceCold = this.global.toleranceCold;
-    var toleranceWarm = this.global.toleranceWarm;
+    //from storage (max of *2 tolerance)
+    var toleranceCold = Math.min(this.global.toleranceCold, 2);
+    var toleranceWarm = Math.min(this.global.toleranceWarm, 2);
+    console.log("tolcold, tolwarm: "+toleranceCold+", "+toleranceWarm);
 
     //get these somehow (from UI or settings?)
     var defaultMinOutside:number = 5; //from settings?
@@ -489,6 +491,13 @@ Inputs:
     //adjust temps given the tolerance
     tempL1 *= toleranceCold;
     tempL2 *= toleranceWarm;
+    console.log("new temp cold = "+tempL1);
+    console.log("new temp warm = "+tempL2);
+
+    //adjust if impossible range
+    if (tempL1 > tempL2){
+      tempL1 = tempL2;
+    }
 
     //get number of minutes in each temperature range
     var minLevel1:number= 0;
@@ -514,16 +523,16 @@ Inputs:
 
     //Calculate "level" based on minutes spent at each level, this is the secret sauce (maybe?)
     //This doesn't consider if time spent is continuous or not... Do we care?
-    //console.log("LEVEL 1-3 minutes:");
-    //console.log(minLevel1);
-    //console.log(minLevel2);
-    //console.log(minLevel3);
+    console.log("LEVEL 1-3 minutes:");
+    console.log(minLevel1);
+    console.log(minLevel2);
+    console.log(minLevel3);
     //should we adjust by tolerance? We are already factoring this once
-    if (minLevel1 > minColdNeedCoat * toleranceCold){
+    if (minLevel1 > minColdNeedCoat / toleranceCold){
       this.level = "wear coat, bundle up";
       this.levelInt = 0;
     }
-    else if (minLevel2 > minCoolNeedJacket * toleranceWarm){
+    else if (minLevel2 > minCoolNeedJacket / toleranceWarm){
       this.level = "wear pants, light jacket";
       this.levelInt = 1;
     }
@@ -532,9 +541,9 @@ Inputs:
       this.levelInt = 2;
     }
 
-    console.log("THIS IS THE LEVEL  " +  this.level + " with this char: " + this.color);
+    console.log("THIS IS THE LEVEL  " +  this.level + " with this char: " + this.global.color);
 
     //set outfit
-    this.setOutfit(this.color);
+    this.setOutfit(this.global.color);
   }
 }

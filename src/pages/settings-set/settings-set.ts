@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { MyglobalsProvider } from '../../providers/myglobals/myglobals';
 
 declare var snap;
 declare var snapKitInit;
@@ -22,7 +23,8 @@ export class SettingsSetPage {
   link:any;
   route:any;
 
-  constructor(public navCtrl: NavController, private storage: Storage, private navParams: NavParams) {
+  constructor(public navCtrl: NavController, private storage: Storage, private navParams: NavParams, 
+    public global: MyglobalsProvider) {
     this.notifications = navParams.get('notifications');
     this.gender = navParams.get('gender');
     this.color = navParams.get('color');
@@ -83,6 +85,7 @@ submit(){
             this.navCtrl.getPrevious().data.gender = this.gender;
             this.navCtrl.getPrevious().data.notifications = this.notifications;
            this.navCtrl.pop();
+           this.global.color = this.color;
 }
 
 

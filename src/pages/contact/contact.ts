@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, IonicApp, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { SettingsSetPage } from '../settings-set/settings-set';
+import { MyglobalsProvider } from '../../providers/myglobals/myglobals';
 
 @Component({
   selector: 'page-contact',
@@ -12,10 +13,14 @@ export class ContactPage {
   gender: any;
   color: any;
   notifications:any;
-  passColor: any;
   pushPage:any;
+  tempCold:any;
+  tempWarm:any;
 
-  constructor(public navCtrl: NavController, private storage: Storage, private navParams: NavParams) {
+
+  constructor(public navCtrl: NavController, private storage: Storage, private navParams: NavParams,
+    public global: MyglobalsProvider, private platform: Platform) {
+
     this.pushPage = false;
 
     this.storage.get('gender').then((val) => {
@@ -24,7 +29,7 @@ export class ContactPage {
     });
 
     this.storage.get('color').then((val) => {
-      this.passColor = val;
+      this.global.color = val;
       this.color = 'url(https://render.bitstrips.com/v2/cpanel/10212369-' + val + '-v1.png?transparent=1&amp;palette=1&amp;width=300';
       console.log(this.color);
     });
@@ -36,12 +41,14 @@ export class ContactPage {
   }
 
   ionViewDidEnter() {
+    this.tempCold = this.global.toleranceCold*39;
+    this.tempWarm = this.global.toleranceWarm*61;
+
     if (this.pushPage == true) {
       console.log("In the pushPage==true");
-        this.passColor = this.navParams.get('thing1');
         this.gender = this.navParams.get('gender');
         this.notifications = this.navParams.get('notifications');
-        this.color = 'url(https://render.bitstrips.com/v2/cpanel/10212369-' + this.passColor + '-v1.png?transparent=1&amp;palette=1&amp;width=300';
+        this.color = 'url(https://render.bitstrips.com/v2/cpanel/10212369-' + this.global.color + '-v1.png?transparent=1&amp;palette=1&amp;width=300';
         console.log(this.color);
         this.pushPage = false;
     }
@@ -53,13 +60,14 @@ export class ContactPage {
 
     this.navCtrl.push(SettingsSetPage, {
       gender: this.gender,
-      color: this.passColor,
+      color: this.global.color,
       notifications: this.notifications
     });
   }
 
   clearCache(){
     this.storage.clear();
+    this.platform.exitApp();
   }
 
 }

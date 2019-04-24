@@ -22,6 +22,7 @@ export class FeedbackPage {
   lastOpen:any;
   lastOpenStr:any;
   lastOpenLevel:any;
+  lastOpenLevelStr:any;
   losCap:any;
   windowCold:any;
   windowWarm:any;
@@ -36,6 +37,7 @@ export class FeedbackPage {
     this.lastOpen = navParams.get("lastOpen");
     this.lastOpenStr = navParams.get("lastOpenStr");
     this.lastOpenLevel = navParams.get("lastOpenLevel");
+    this.lastOpenLevelStr = navParams.get("lastOpenLevelStr");
     this.losCap = this.lastOpenStr.substr(this.lastOpenStr.indexOf(" ") + 1);
   }
 
@@ -60,34 +62,14 @@ export class FeedbackPage {
         return this.SMALL_CHANGE;
       }
       else if (this.preference == 'warm'){
-        return 1 - (1-this.SMALL_CHANGE);
+        return 1 - (this.SMALL_CHANGE-1);
       }
       else if (this.preference == 'muchWarm'){
-        return 1 - (1-this.LARGE_CHANGE);
+        return 1 - (this.LARGE_CHANGE-1);
       }
     }else{
       return 1;
     }
-  }
-
-  getWindows(){
-    this.storage.get("windowCold").then((val) => {
-      console.log('Found windowCold ', val);
-      if ( val != null) {
-        this.windowCold = val;
-      }else{
-        this.windowCold = Array(1).fill(1);
-      }
-    });
-
-    this.storage.get("windowWarm").then((val) => {
-      console.log('Found windowWarm ', val);
-      if ( val != null) {
-        this.windowWarm = val;
-      }else{
-        this.windowWarm = Array(1).fill(1);
-      }
-    });
   }
 
   getWindowCold(){
@@ -132,7 +114,7 @@ export class FeedbackPage {
       this.getWindowCold().then(_=>{
         this.getWindowWarm().then(_=>{
           
-          console.log("cold window: "+this.windowCold);
+          console.log("cold window: "+this.windowCold+" lastOpenLevel "+this.lastOpenLevel);
 
           //iterate over the cold window
           var coldAvg = 0;
@@ -156,14 +138,14 @@ export class FeedbackPage {
             else if (this.usrFb == "okay"){
               var adj = this.getAdj();
               if (adj > 1){
-                this.windowCold.push(coldAvg*this.SMALL_CHANGE*adj);
+                this.windowCold.push(coldAvg/this.SMALL_CHANGE/adj);
               }else{
                 this.windowCold.push(coldAvg);
               }
             }else if (this.usrFb == "bad"){
               var adj = this.getAdj();
               if (adj > 1){
-                this.windowCold.push(coldAvg*this.LARGE_CHANGE*adj);
+                this.windowCold.push(coldAvg/this.LARGE_CHANGE/adj); //make tolerance val smaller (more light jacket)
               }else if (adj < 1){
                 //this.windowCold.push(adj/this.SMALL_CHANGE);
                 this.windowCold.push(coldAvg);
@@ -178,36 +160,39 @@ export class FeedbackPage {
             else if (this.usrFb == "okay"){
               var adj = this.getAdj();
               if (adj > 1){
-                this.windowWarm.push(warmAvg*this.SMALL_CHANGE*adj);
+                this.windowWarm.push(warmAvg/this.SMALL_CHANGE/adj); //make tolerance value smaller (more shorts)
               }else if (adj < 1){
-                this.windowCold.push(coldAvg*adj/this.SMALL_CHANGE);
+                this.windowCold.push(coldAvg/adj*this.SMALL_CHANGE); //make tolerance value larger (more coat)
               }
             }else if (this.usrFb == "bad"){
               var adj = this.getAdj();
               if (adj > 1){
-                this.windowWarm.push(warmAvg*this.LARGE_CHANGE*adj);
+                this.windowWarm.push(warmAvg/this.LARGE_CHANGE/adj); //make tolerance value smaller (more shorts)
               }else if (adj < 1){
-                this.windowCold.push(coldAvg*adj/this.LARGE_CHANGE);
+                this.windowCold.push(coldAvg/adj*this.LARGE_CHANGE); //make tolerance value larger (more coat)
               }
             }
 
           }else if (this.lastOpenLevel == 2){ //if we predicted hot
             if (this.usrFb == "good"){
               this.windowWarm.push(warmAvg);
+              console.log("doing this 1");
             }
             else if (this.usrFb == "okay"){
               var adj = this.getAdj();
+              console.log("doing this 2 adj = "+adj);
               if (adj > 1){
                 this.windowWarm.push(warmAvg);
               }else{
-                this.windowWarm.push(warmAvg*adj/this.SMALL_CHANGE);
+                this.windowWarm.push(warmAvg/adj*this.SMALL_CHANGE); //make value larger (less shorts)
               }
             }else if (this.usrFb == "bad"){
               var adj = this.getAdj();
+              console.log("doing this 3 adj = "+adj);
               if (adj > 1){
                 this.windowWarm.push(warmAvg);
               }else{
-                this.windowWarm.push(warmAvg*adj/this.LARGE_CHANGE);
+                this.windowWarm.push(warmAvg/adj*this.LARGE_CHANGE);
               }
             }
           }
