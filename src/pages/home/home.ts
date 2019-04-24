@@ -306,7 +306,7 @@ export class HomePage {
     this.navCtrl.push(FeedbackPage, {
       lastOpen: this.lastOpen,
       lastOpenStr: prefix+this.lastOpenStr,
-      lastOpenLevel: 1,//this.lastOpenLevel,
+      lastOpenLevel: this.lastOpenLevel,
       lastOpenLevelStr: lol
     });
 
