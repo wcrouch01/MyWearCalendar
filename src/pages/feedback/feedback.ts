@@ -23,10 +23,15 @@ export class FeedbackPage {
   lastOpenStr:any;
   lastOpenLevel:any;
   losCap:any;
+  windowCold:any;
+  windowWarm:any;
+  MAX_ELEMENTS = 25;
+  SMALL_CHANGE = 1.05;
+  LARGE_CHANGE = 1.10;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public toastController: ToastController, private storage: Storage, 
-    public global: MyglobalsProvider) {
+    public globals: MyglobalsProvider) {
     
     this.lastOpen = navParams.get("lastOpen");
     this.lastOpenStr = navParams.get("lastOpenStr");
@@ -46,6 +51,25 @@ export class FeedbackPage {
     toast.present();
   }
 
+  getAdj(){
+    if (this.usrFb==='okay' || this.usrFb==='bad'){
+      if (this.preference == 'muchWarm'){
+        return this.LARGE_CHANGE;
+      }
+      else if (this.preference == 'warm'){
+        return this.SMALL_CHANGE;
+      }
+      else if (this.preference == 'cool'){
+        return 1 - (1-this.SMALL_CHANGE);
+      }
+      else if (this.preference == 'muchCool'){
+        return 1 - (1-this.LARGE_CHANGE);
+      }
+    }else{
+      return 1;
+    }
+  }
+
   submit(){
     console.log(this.usrFb);
 
@@ -59,9 +83,95 @@ export class FeedbackPage {
       return;
     }
 
-    //DO MAGIC ALG WITH GLOBALS
+    if (this.lastOpenLevel != "unknown"){
+      //DO MAGIC ALG WITH GLOBALS
+      
 
-    //END MAGIC ALG
+      this.globals.toleranceCold
+
+      this.storage.get("windowCold").then((val) => {
+        console.log('Found windowCold ', val);
+        if ( val != null) {
+          this.windowCold = val;
+        }else{
+          this.windowCold = [];
+        }
+      });
+
+      this.storage.get("windowWarm").then((val) => {
+        console.log('Found windowWarm ', val);
+        if ( val != null) {
+          this.windowWarm = val;
+        }else{
+          this.windowWarm = [];
+        }
+      });
+
+      //iterate over the cold window
+      var coldAvg = 0;
+      for (var i = 0; i < this.windowCold.length; i++){
+        coldAvg += parseFloat(this.windowCold[i]);
+      }
+      coldAvg = coldAvg / parseFloat(this.windowCold.length);
+
+      //iterate over the warm window
+      var warmAvg = 0;
+      for (var i = 0; i < this.windowWarm.length; i++){
+        warmAvg += parseFloat(this.windowWarm[i]);
+      }
+      warmAvg = warmAvg / parseFloat(this.windowWarm.length);
+
+      //add item to window (appropriately)
+      if (this.lastOpenLevel == 0){ //if we predicted cold
+        if (this.usrFb == "good"){
+          this.windowCold.push(coldAvg);
+        }
+        else if (this.usrFb == "okay"){
+          this.windowCold.push(this.SMALL_CHANGE*Math.max(1, this.getAdj()));
+        }else if (this.usrFb == "bad"){
+
+        }
+
+      }else if (this.lastOpenLevel == 1){ //if we predicted warm
+        if (this.usrFb == "good"){
+          this.windowWarm.push(warmAvg);
+        }
+        else if (this.usrFb == "okay"){
+          this.windowWarm.push(warmAvg);
+        }else if (this.usrFb == "bad"){
+
+        }
+
+      }else if (this.lastOpenLevel == 2){ //if we predicted hot
+        if (this.usrFb == "good"){
+          this.windowWarm.push(warmAvg);
+        }
+        else if (this.usrFb == "okay"){
+          
+        }else if (this.usrFb == "bad"){
+
+        }
+      }
+
+      this.windowCold.push();
+      this.windowWarm.push();
+
+      //shift if more than 25 (or MAX_ELEMENTS) elements
+      if (this.windowCold.length > this.MAX_ELEMENTS){
+        this.windowCold.shift();
+      }
+      if (this.windowWarm.length > this.MAX_ELEMENTS){
+        this.windowWarm.shift();
+      }
+
+
+      
+
+      //END MAGIC ALG
+      this.storage.set("windowWarm", this.windowWarm);
+      this.storage.set("windowCold", this.windowCold);
+
+    }
 
     this.navCtrl.pop();
   }
