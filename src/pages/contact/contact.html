@@ -21,14 +21,11 @@
   <ion-list-header>Temperature Cutoffs</ion-list-header>
   <ion-item>
       Cold temperature cutoff (degrees): {{tempCold}}
-  </ion-item>
-  <ion-item>
+      <br/><br/>
       Warm temperature cutoff (degrees): {{tempWarm}}
   </ion-item>
 
 <button style="margin: 20px" ion-button color="primary" (click)="update()">Update</button>
 <button style="margin: 20px; margin-left:0px;" ion-button color="secondary" (click)="clearCache()">Clear Cache</button>
-<p style="padding-left: 10px"></p>
-<p style="padding-left: 10px"></p>
 <p style="padding-left: 10px">Weather graphics provided by amCharts.</p>
 </ion-content>

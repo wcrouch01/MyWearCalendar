@@ -233,11 +233,6 @@ export class FeedbackPage {
 
         });
       });
-
-      
-
-      
-
     }
 
     this.navCtrl.pop();
