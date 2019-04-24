@@ -44,13 +44,13 @@ export class HomePage {
   days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient,
-    private platform: Platform, public navParams: NavParams, private storage: Storage, 
+    private platform: Platform, public navParams: NavParams, private storage: Storage,
     public global: MyglobalsProvider, private nativeGeocoder: NativeGeocoder, public alertController: AlertController) {
       this.dropdown = false;
       this.gradient = "linear-gradient(#fffba4,#019dc5)";
 
     this.storage.get('gender').then((val) => {
-      console.log('Your gender is', val);
+      //console.log('Your gender is', val);
       this.gender = val;
 
       //if you havent opened the app yet
@@ -60,21 +60,22 @@ export class HomePage {
     });
 
 
-    this.storage.get('color').then((val) => {
-    this.color = val;
-
+    //this.storage.get('color').then((val) => {
+    //this.color = val;
+    //this.setOutfit(val);
     //this.level = "https://render.bitstrips.com/render/10215854/" + this.color + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=300";
-    console.log('Your character is', this.outfit);
-    });
+    //console.log('Your character is', this.outfit);
+    //});
 
     //save the last time this app has loaded
 
   }
 
+
  ionViewWillEnter() {
-   if (this.color == null) {
-     this.color = this.navParams.get('thing1')|| null;
-   }
+//   if (this.color == null) {
+//     this.color = this.navParams.get('thing1')|| null;
+//   }
  }
 
   setOutfit(val){
@@ -102,25 +103,45 @@ export class HomePage {
           this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=1017606&head_rotation=0&body_rotation=0&width=400')"
       }
       }
+      console.log(this.outfit);
   }
 
   ionViewDidEnter(){
 
+    this.storage.get('color').then((val) => {
+    this.color = val;
+    if (val == null) {
+      this.color = this.navParams.get('thing1')|| null;
+    }
+    console.log('Your character is ' + val + " and the gender " + this.gender);
+    this.setOutfit(this.color);
+    });
+
+    this.storage.get('gender').then((val) => {
+      //console.log('Your gender is', val);
+      this.gender = val;
+      if (val == null) {
+        this.gender = this.navParams.get('gender')|| null;
+      }
+    });
+
+
 		this.platform.ready().then(() => {
 			console.log("Device is ready! View did enter!");
+      console.log(this.color);
 			let options = {
 				enableHighAccuracy: true,
 				timeout: 100000,
         maximumAge: 0
 			}
 			this.geolocation.getCurrentPosition(options).then((resp) => {
-				console.log("My position: " + resp.coords.latitude + ", " + resp.coords.longitude);
+				//console.log("My position: " + resp.coords.latitude + ", " + resp.coords.longitude);
         this.aipCall(resp.coords.latitude ,resp.coords.longitude);
         //this.storage.set('lat', resp.coords.latitude);
         //this.storage.set('long', resp.coords.longitude);
 
 			}).catch((error) => {
-				console.log("Error getting location Code: " + error.code + ", Message: " + error.message);
+				//console.log("Error getting location Code: " + error.code + ", Message: " + error.message);
 			});
 		});
 
@@ -143,13 +164,13 @@ export class HomePage {
           this.lastOpenLevel = undefined;
         }
       });
-      
+
       //if there is a lastOpen value
       if ( val != null) {
         this.lastOpen = new Date(val);
         var now = new Date();
         var diff = (Number(now) - this.lastOpen) / 3.6e6;
-        console.log("last open found: "+this.lastOpen+" or hours ago: "+diff);
+        //console.log("last open found: "+this.lastOpen+" or hours ago: "+diff);
 
         //calculate 'Monday', 'Today', 'Yesterday'
         this.lastOpenStr = this.days[ this.lastOpen.getDay() ];
@@ -159,11 +180,11 @@ export class HomePage {
           this.lastOpenStr = "Yesterday";
         }
 
-        //see if the app has been opened in less than x hours 
+        //see if the app has been opened in less than x hours
         if (diff > 1 && diff < 168){
           this.giveFeedbackAlert();
           this.saveCurrentOpen();
-        } 
+        }
 
         //if app has been opened in less than 1 hour, assume just checking the weather
         else if (diff >= 168){
@@ -171,21 +192,21 @@ export class HomePage {
         }
 
       }else{
- 
+
         //store first 'lastOpen' value
         this.saveCurrentOpen();
-        console.log("Set lastOpen: "+(new Date()));
+        //console.log("Set lastOpen: "+(new Date()));
       }
     });
   }
 
   markLocation(){
-    console.log("IN MARKLOCATION");
+    //console.log("IN MARKLOCATION");
     this.dropdown = !this.dropdown;
   }
 
   setNewLocation(){
-    console.log("Set New Location", this.newLoc);
+    //console.log("Set New Location", this.newLoc);
 
     let options: NativeGeocoderOptions = {
       useLocale: true,
@@ -194,7 +215,7 @@ export class HomePage {
 
     this.nativeGeocoder.forwardGeocode(this.newLoc, options)
       .then((coordinates: NativeGeocoderForwardResult[]) => {
-        console.log('The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
+        //console.log('The coordinates are latitude=' + coordinates[0].latitude + ' and longitude=' + coordinates[0].longitude)
         this.aipCall(coordinates[0].latitude, coordinates[0].longitude);
       })
       .catch((error: any) => console.log(error));
@@ -206,11 +227,11 @@ export class HomePage {
   aipCall(lat,long){
 
     var apiCall = "https://api.weather.gov/points/"+ lat +","+ long +"/forecast/hourly"
-     //console.log(apiCall);
+     ////console.log(apiCall);
        this.http.get<apiResponse>(apiCall).subscribe((response) => {
-        //console.log("apiCall1",response);
+        ////console.log("apiCall1",response);
          this.hourlyReport = response.properties.periods;
-         //console.log(response.properties.periods);
+         ////console.log(response.properties.periods);
          this.weatherLocal = response.properties.periods[0].temperature;
          this.whatToWear();
       }, err => {
@@ -218,11 +239,11 @@ export class HomePage {
     });
 
     var apiCall2 = "https://api.weather.gov/points/"+ lat +","+ long +"/forecast"
-     //console.log(apiCall);
+     ////console.log(apiCall);
        this.http.get<apiResponse>(apiCall2).subscribe((response) => {
-        //console.log("apiCall2" , response.properties.periods[0]);
+        ////console.log("apiCall2" , response.properties.periods[0]);
          this.temperature = Math.max(response.properties.periods[0].temperature, response.properties.periods[1].temperature);
-         //console.log(response.properties.periods);
+         ////console.log(response.properties.periods);
          this.shortForecast = response.properties.periods[0].shortForecast;
 
           if (this.shortForecast.includes("Thunder") || this.shortForecast.includes("thunder")) {
@@ -241,7 +262,7 @@ export class HomePage {
            this.graphic = "url('../../assets/icon/cloudy-day-1.svg')";
            this.gradient = "linear-gradient(#fffba4,#019dc5)";
          }
-         console.log(this.temperature + " , " + this.shortForecast);
+         //console.log(this.temperature + " , " + this.shortForecast);
 
       }, err => {
         this.weatherLocal = err;
@@ -253,7 +274,7 @@ export class HomePage {
   giveFeedback() {
 
     var now = new Date();
-    //console.log(this.lastOpen);
+    ////console.log(this.lastOpen);
     this.lastOpenStr = this.days[ this.lastOpen.getDay() ];
 
     //get last open string
@@ -280,7 +301,7 @@ export class HomePage {
     }else if (this.lastOpenLevel == 2){
       lol = "shorts";
     }
-    console.log("Last open level: "+this.lastOpenLevel);
+    //console.log("Last open level: "+this.lastOpenLevel);
 
     this.navCtrl.push(FeedbackPage, {
       lastOpen: this.lastOpen,
@@ -307,7 +328,7 @@ export class HomePage {
           role: 'no',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            //console.log('Confirm Cancel');
           }
         }, {
           text: 'Yes',
@@ -323,7 +344,7 @@ export class HomePage {
 
   saveCurrentOpen(){
     this.storage.set('lastOpen', (new Date()));
-    //console.log("Saving lol of : "+this.levelInt);
+    ////console.log("Saving lol of : "+this.levelInt);
     this.storage.set('lastOpenLevel', this.levelInt);
   }
 
@@ -379,7 +400,7 @@ Inputs:
 */
 
   whatToWear() {
-    console.log("IN WHAT TO WEAR()");
+    //console.log("IN WHAT TO WEAR()");
 
     //get events (including transportation) from calendar page (it is loaded)
     var events = this.global.events;
@@ -407,13 +428,13 @@ Inputs:
     //from storage
     var toleranceCold = this.global.toleranceCold;
     var toleranceWarm = this.global.toleranceWarm;
-    
+
     //get these somehow (from UI or settings?)
     var defaultMinOutside:number = 5; //from settings?
     var numHours:number = 18; // the number of hours we want to look at
 
     //set hour array
-    var minOutside:number[] = new Array(numHours);  
+    var minOutside:number[] = new Array(numHours);
     for(let h=0; h<numHours; h++){
       minOutside[h] = 0;
     }
@@ -430,15 +451,15 @@ Inputs:
 
       for(let i=0; i<events.length; i++){
 
-        //console.log("DOING: hour "+h);
-        //console.log("dtend: "+(new Date(events[i].dtend)) + " end "+end+" hrDate "+hrDate + " now "+now);
-        //console.log((new Date(events[i].dtend)) < end);
-        //console.log((new Date(events[i].dtend)) > hrDate);
+        ////console.log("DOING: hour "+h);
+        ////console.log("dtend: "+(new Date(events[i].dtend)) + " end "+end+" hrDate "+hrDate + " now "+now);
+        ////console.log((new Date(events[i].dtend)) < end);
+        ////console.log((new Date(events[i].dtend)) > hrDate);
 
         let eDate = new Date(events[i].dtend);
 
         //if event ends before the end of the range, and it ends after the current hour
-        if (events[i].time !== undefined && eDate < end && 
+        if (events[i].time !== undefined && eDate < end &&
             eDate > hrDate && eDate < hrDatep1){
           minOutside[h] += parseInt(events[i].time);
         }else if (eDate < end && eDate > hrDate && eDate < hrDatep1){
@@ -446,7 +467,7 @@ Inputs:
         }
 
         //handle pre_event (i==0 only), use dtstart instead
-        if (i == 0 && events[i].pre_time !== undefined && eDate < end && 
+        if (i == 0 && events[i].pre_time !== undefined && eDate < end &&
             eDate > hrDate && eDate < hrDatep1){
           minOutside[h] += parseInt(events[i].pre_time);
         }else if (i == 0 && eDate < end && eDate > hrDate && eDate < hrDatep1){
@@ -460,7 +481,7 @@ Inputs:
       hrDatep1.setHours( hrDatep1.getHours() + 1 );
     }
 
-    console.log(minOutside);
+    //console.log(minOutside);
 
     //adjust temps given the tolerance
     tempL1 *= toleranceCold;
@@ -473,10 +494,10 @@ Inputs:
 
     //Find #min outside at each temperature level
     for(let h=0; h<numHours; h++){
-      
+
       //good line to uncomment for debugging alg
-      //console.log("Hour " +h+" temp "+this.hourlyReport[h].temperature + " min outside "+minOutside[h]);
-      
+      ////console.log("Hour " +h+" temp "+this.hourlyReport[h].temperature + " min outside "+minOutside[h]);
+
       if (this.hourlyReport[h].temperature < tempL1){
         minLevel1 += minOutside[h];
       }
@@ -490,10 +511,10 @@ Inputs:
 
     //Calculate "level" based on minutes spent at each level, this is the secret sauce (maybe?)
     //This doesn't consider if time spent is continuous or not... Do we care?
-    console.log("LEVEL 1-3 minutes:");
-    console.log(minLevel1);
-    console.log(minLevel2);
-    console.log(minLevel3);
+    //console.log("LEVEL 1-3 minutes:");
+    //console.log(minLevel1);
+    //console.log(minLevel2);
+    //console.log(minLevel3);
     //should we adjust by tolerance? We are already factoring this once
     if (minLevel1 > minColdNeedCoat * toleranceCold){
       this.level = "wear coat, bundle up";
@@ -508,7 +529,7 @@ Inputs:
       this.levelInt = 2;
     }
 
-    console.log("THIS IS THE LEVEL  " +  this.level);
+    console.log("THIS IS THE LEVEL  " +  this.level + " with this char: " + this.color);
 
     //set outfit
     this.setOutfit(this.color);
