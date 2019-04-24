@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { NavController,  NavParams, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -35,12 +34,14 @@ export class HomePage {
   //color: any;
   notifications: any;
   gradient:any;
+  gradientEnd:any;
   outfit: string;
   dropdown: boolean;
   newLoc: string;
   lastOpen: any;
   lastOpenStr: any;
   lastOpenLevel:number;
+  totalTime:number;
   days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient,
@@ -48,6 +49,7 @@ export class HomePage {
     public global: MyglobalsProvider, private nativeGeocoder: NativeGeocoder, public alertController: AlertController) {
       this.dropdown = false;
       this.gradient = "linear-gradient(#fffba4,#019dc5)";
+      this.gradientEnd = "#019dc5";
 
     this.storage.get('gender').then((val) => {
       //console.log('Your gender is', val);
@@ -79,7 +81,7 @@ export class HomePage {
  }
 
   setOutfit(val){
-    if (this.level == "wear coat, bundle up"){
+    if (this.levelInt == 0){
       if (this.gender == 2) { //women outfit
           this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=944137&head_rotation=0&body_rotation=0&width=400')"
       }
@@ -87,7 +89,7 @@ export class HomePage {
           this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=400')"
       }
     }
-    else if (this.level == "wear pants, light jacket"){
+    else if (this.levelInt == 1){
       if (this.gender == 2) {
           this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=957114&head_rotation=0&body_rotation=0&width=400')"
       }
@@ -95,7 +97,7 @@ export class HomePage {
           this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=962366&head_rotation=0&body_rotation=0&width=400')"
       }
     }
-    else{ //this.level = "shorts are good";
+    else{ //this.levelInt = 2;
       if (this.gender == 2) {
           this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=889503&head_rotation=0&body_rotation=0&width=400')"
       }
@@ -198,6 +200,9 @@ export class HomePage {
         //console.log("Set lastOpen: "+(new Date()));
       }
     });
+
+    //set the refresh icon to the end of the gradient color (so it will stand out)
+    document.getElementById("ricon").style.color = this.gradientEnd;
   }
 
   markLocation(){
@@ -249,18 +254,24 @@ export class HomePage {
           if (this.shortForecast.includes("Thunder") || this.shortForecast.includes("thunder")) {
            this.graphic = "url('../../assets/icon/thunder.svg')";
            this.gradient = "linear-gradient(#76787b,#007bcb, #002856)";
+           this.gradientEnd = "#002856";
+           //document.getElementsByName("refresh")[0].style.color = "FFA500";
          }else if (this.shortForecast.includes("Snow") || this.shortForecast.includes("snow")) {
              this.graphic = "url('../../assets/icon/snowy-1.svg')";
              this.gradient = "linear-gradient(#949598,#0060b5)";
+             this.gradientEnd = "#0060b5";
          }else if (this.shortForecast.includes("Rain") || this.shortForecast.includes("rain")) {
              this.graphic = "url('../../assets/icon/rainy-1.svg')";
              this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+             this.gradientEnd = "#007aac";
          }else if (this.shortForecast.includes("Cloud") || this.shortForecast.includes("cloud")) {
            this.graphic = "url('../../assets/icon/cloudy.svg')";
            this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+           this.gradientEnd = "#007aac";
          }else{
            this.graphic = "url('../../assets/icon/cloudy-day-1.svg')";
            this.gradient = "linear-gradient(#fffba4,#019dc5)";
+           this.gradientEnd = "#019dc5";
          }
          //console.log(this.temperature + " , " + this.shortForecast);
 
@@ -521,6 +532,9 @@ Inputs:
       }
     }
 
+    //calculate total time outside
+    this.totalTime = minLevel1 + minLevel2 + minLevel3;
+
     //Calculate "level" based on minutes spent at each level, this is the secret sauce (maybe?)
     //This doesn't consider if time spent is continuous or not... Do we care?
     console.log("LEVEL 1-3 minutes:");
@@ -529,15 +543,15 @@ Inputs:
     console.log(minLevel3);
     //should we adjust by tolerance? We are already factoring this once
     if (minLevel1 > minColdNeedCoat / toleranceCold){
-      this.level = "wear coat, bundle up";
+      this.level = "Wear a coat, bundle up";
       this.levelInt = 0;
     }
     else if (minLevel2 > minCoolNeedJacket / toleranceWarm){
-      this.level = "wear pants, light jacket";
+      this.level = "Wear pants and/or a jacket";
       this.levelInt = 1;
     }
     else{
-      this.level = "shorts are good";
+      this.level = "Wearing shorts is okay";
       this.levelInt = 2;
     }
 
