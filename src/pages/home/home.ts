@@ -308,6 +308,9 @@ export class HomePage {
       lastOpenStr: prefix+this.lastOpenStr,
       lastOpenLevel: lol
     });
+
+    //save current state as 'feedback'
+    this.saveCurrentOpen();
   }
 
   async giveFeedbackAlert() {
