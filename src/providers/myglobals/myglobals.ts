@@ -16,6 +16,8 @@ export class MyglobalsProvider {
     //declare global variables here, inject them into pages like 'about.ts'
     public events;
     public isRun: boolean;
+    public toleranceCold: number;
+    public toleranceWarm: number;
 
   constructor(public http: HttpClient, private calendar: Calendar, private platform: Platform, private storage: Storage) {
     console.log('Hello MyglobalsProvider Provider');
@@ -27,6 +29,7 @@ export class MyglobalsProvider {
     if (!this.isRun){
       this.loadEvents();
       this.loadTransportation();
+      this.loadTolerance();
       this.isRun = true;
     }
   }
@@ -125,6 +128,29 @@ export class MyglobalsProvider {
         });
       }
     }
+  }
+
+  loadTolerance(){
+
+    this.storage.get("toleranceCold").then((val) => {
+      console.log('Found toleranceCold', val);
+      if ( val != null) {
+        this.toleranceCold = val;
+      }else{
+        this.toleranceCold = 1;
+      }
+    });
+
+    this.storage.get("toleranceWarm").then((val) => {
+      console.log('Found toleranceWarm', val);
+      if ( val != null) {
+        this.toleranceWarm = val;
+      }else{
+        this.toleranceWarm = 1;
+      }
+    });
+
+
   }
 
 }

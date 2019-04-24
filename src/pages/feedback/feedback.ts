@@ -21,6 +21,8 @@ export class FeedbackPage {
   preference:any;
   lastOpen:any;
   lastOpenStr:any;
+  lastOpenLevel:any;
+  losCap:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public toastController: ToastController, private storage: Storage, 
@@ -28,6 +30,8 @@ export class FeedbackPage {
     
     this.lastOpen = navParams.get("lastOpen");
     this.lastOpenStr = navParams.get("lastOpenStr");
+    this.lastOpenLevel = navParams.get("lastOpenLevel");
+    this.losCap = this.lastOpenStr.substr(this.lastOpenStr.indexOf(" ") + 1);
   }
 
   ionViewDidLoad() {

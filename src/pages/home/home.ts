@@ -27,6 +27,7 @@ export class HomePage {
   weatherLocal: any;
   hourlyReport: [any];
   level : string = "";
+  levelInt: number;
   gender: any;
   temperature: any;
   graphic: any;
@@ -39,6 +40,7 @@ export class HomePage {
   newLoc: string;
   lastOpen: any;
   lastOpenStr: any;
+  lastOpenLevel:number;
   days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient,
@@ -133,6 +135,14 @@ export class HomePage {
 
     //ask for feedback if we have opened the app earlier and haven't given feedback
     this.storage.get("lastOpen").then((val) => {
+
+      this.storage.get("lastOpenLevel").then((val) => {
+        if ( val != null) {
+          this.lastOpenLevel = parseInt(val);
+        }else{
+          this.lastOpenLevel = undefined;
+        }
+      });
       
       //if there is a lastOpen value
       if ( val != null) {
@@ -152,18 +162,18 @@ export class HomePage {
         //see if the app has been opened in less than x hours 
         if (diff > 1 && diff < 168){
           this.giveFeedbackAlert();
-          this.storage.set('lastOpen', (new Date()));
+          this.saveCurrentOpen();
         } 
 
         //if app has been opened in less than 1 hour, assume just checking the weather
         else if (diff >= 168){
-          this.storage.set('lastOpen', (new Date()));
+          this.saveCurrentOpen();
         }
 
       }else{
  
         //store first 'lastOpen' value
-        this.storage.set('lastOpen', (new Date()));
+        this.saveCurrentOpen();
         console.log("Set lastOpen: "+(new Date()));
       }
     });
@@ -243,15 +253,17 @@ export class HomePage {
   giveFeedback() {
 
     var now = new Date();
-    console.log(this.lastOpen);
+    //console.log(this.lastOpen);
     this.lastOpenStr = this.days[ this.lastOpen.getDay() ];
 
+    //get last open string
     if (this.lastOpen.getDay() == now.getDay()){
       this.lastOpenStr = "Today";
     }else if (this.lastOpen.getDay() == now.getDay()-1){
       this.lastOpenStr = "Yesterday";
     }
 
+    //modify prefix depending on open string
     var prefix = 'on ';
     if (this.lastOpenStr == 'Today'){
         prefix = "earlier ";
@@ -259,9 +271,21 @@ export class HomePage {
         prefix = "";
     }
 
+    //get level of wear
+    var lol = "unknown";
+    if (this.lastOpenLevel == 0){
+      lol = "coat";
+    }else if (this.lastOpenLevel == 1){
+      lol = "pants and light jacket";
+    }else if (this.lastOpenLevel == 2){
+      lol = "shorts";
+    }
+    console.log("Last open level: "+this.lastOpenLevel);
+
     this.navCtrl.push(FeedbackPage, {
       lastOpen: this.lastOpen,
-      lastOpenStr: prefix+this.lastOpenStr
+      lastOpenStr: prefix+this.lastOpenStr,
+      lastOpenLevel: lol
     });
   }
 
@@ -295,6 +319,12 @@ export class HomePage {
     });
 
     await alert.present();
+  }
+
+  saveCurrentOpen(){
+    this.storage.set('lastOpen', (new Date()));
+    //console.log("Saving lol of : "+this.levelInt);
+    this.storage.set('lastOpenLevel', this.levelInt);
   }
 
 
@@ -375,8 +405,8 @@ Inputs:
     var minCoolNeedJacket = 10;
 
     //from storage
-    var toleranceCold = 1;
-    var toleranceWarm = 1;
+    var toleranceCold = this.global.toleranceCold;
+    var toleranceWarm = this.global.toleranceWarm;
     
     //get these somehow (from UI or settings?)
     var defaultMinOutside:number = 5; //from settings?
@@ -467,12 +497,15 @@ Inputs:
     //should we adjust by tolerance? We are already factoring this once
     if (minLevel1 > minColdNeedCoat * toleranceCold){
       this.level = "wear coat, bundle up";
+      this.levelInt = 0;
     }
     else if (minLevel2 > minCoolNeedJacket * toleranceWarm){
       this.level = "wear pants, light jacket";
+      this.levelInt = 1;
     }
     else{
       this.level = "shorts are good";
+      this.levelInt = 2;
     }
 
     console.log("THIS IS THE LEVEL  " +  this.level);
