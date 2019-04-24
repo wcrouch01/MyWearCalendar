@@ -17,6 +17,10 @@ page-settings-set {
 				display: none;
 		}
 
+		&.backgroundChange{
+			background-color: #488aff;
+		}
+
 		&.colorselected:before {
 
 				color: white;
@@ -27,6 +31,7 @@ page-settings-set {
 				top: 50%;
 				position: relative;
 				transform: translate(-50%);
+
 		}
 
 		$colorsToSelect: '270452106_2-s1' '270452106_2-s1' '270452105_2-s1' '270452098_2-s1' '270452091_2-s1' '270452076_2-s1' '270452062_2-s1' '270452058_2-s1' '270452214_2-s1' '270452208_2-s1' '270452200_2-s1' '270452176_2-s1' '270452131_2-s1' '270452117_2-s1' '270452103_2-s1';

@@ -1,4 +1,5 @@
 <ion-content>
+  <h3 style="padding: 10px">Settings</h3>
   <ion-list>
     <ion-list-header>Gender</ion-list-header>
     <ion-item *ngIf="gender == 1">
@@ -10,16 +11,14 @@
   </ion-list>
 
   <ion-list-header>Skin Color</ion-list-header>
-  <div [ngStyle]="{'background-color': color}" class="select-text">
-
-  </div>
+  <div [ngStyle]="{'background-image': color}" class="color"></div>
 
   <ion-list-header>Notficiations</ion-list-header>
   <ion-item>
     {{notifications}}
   </ion-item>
 
-  <br>
-  <br>
-  <p>  Weather graphics provided by amCharts.</p>
+<button style="margin: 20px" ion-button color="primary" (click)="update()">Update</button>
+<button style="margin: 20px; margin-left:0px;" ion-button color="secondary" (click)="clearCache()">Clear Cache</button>
+<p style="padding-left: 10px">Weather graphics provided by amCharts.</p>
 </ion-content>

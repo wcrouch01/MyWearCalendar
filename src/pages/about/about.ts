@@ -21,7 +21,9 @@ export class AboutPage {
 
       //get global events
       this.events = this.global.events;
-
+      for (let i = 0; i < this.events.length; i++) {
+          console.log(this.events[i].startDate);
+      }
   }
 
   ionViewDidEnter(){
@@ -53,7 +55,7 @@ export class AboutPage {
         ind: i
       });
     }
-    
+
   }
 
 

@@ -23,16 +23,31 @@ export class SettingsSetPage {
   route:any;
 
   constructor(public navCtrl: NavController, private storage: Storage, private navParams: NavParams) {
-    this.notifications = true;
-    this.gender = 1;
-    this.colors = this.colors_Men;
+    this.notifications = navParams.get('notifications');
+    this.gender = navParams.get('gender');
+    this.color = navParams.get('color');
     this.args = navParams.get('args');
-    this.color = '270452214_2-s1';
-    console.log("this is args", JSON.stringify(this.args));//.$link.fragment));
 
+    console.log(this.notifications + "  " + this.gender + " " + this.color);
 
-    console.log("this is snap", snap);
-    console.log("this is init", snapKitInit);
+    if (this.notifications == undefined) {
+      this.notifications = true;
+    }
+    if (this.gender == undefined) {
+      this.gender = 1;
+    }
+    if (this.color == undefined) {
+      this.color = '270452214_2-s1';
+    }
+
+    if (this.gender == 1) {
+      this.colors = this.colors_Men;
+    }
+    else{
+      this.colors = this.colors_Women;
+    }
+
+    console.log(this.notifications + "  " + this.gender + " " + this.color);
   }
 
   onChange(newValue) {
@@ -65,6 +80,8 @@ submit(){
            this.storage.set('color', this.color);
            this.storage.set('notifications', this.notifications);
             this.navCtrl.getPrevious().data.thing1 = this.color;
+            this.navCtrl.getPrevious().data.gender = this.gender;
+            this.navCtrl.getPrevious().data.notifications = this.notifications;
            this.navCtrl.pop();
 }
 
@@ -102,8 +119,10 @@ let buttonElements = document.querySelectorAll('div.alert-radio-group button.col
 for (let index = 0; index < buttonElements.length; index++) {
   let buttonElement = buttonElements[index];
   buttonElement.classList.remove('colorselected');
+  buttonElement.classList.remove('backgroundChange');
   if (buttonElement.classList.contains('color_' + color)) {
     buttonElement.classList.add('colorselected');
+    buttonElement.classList.add('backgroundChange');
   }
 }
 }
