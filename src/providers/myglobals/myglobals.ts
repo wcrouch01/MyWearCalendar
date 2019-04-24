@@ -54,8 +54,8 @@ export class MyglobalsProvider {
             this.events = data;
 
             for(let i=0; i<this.events.length; i++){
-              this.events[i].dtstart = this.events[i].startDate;
-              this.events[i].dtend = this.events[i].endDate;
+              this.events[i].dtstart = (new Date(this.events[i].startDate));
+              this.events[i].dtend = (new Date(this.events[i].endDate));
               this.events[i].startDate = (new Date(this.events[i].startDate)).toLocaleTimeString();;
               this.events[i].endDate = (new Date(this.events[i].endDate)).toLocaleTimeString();;
             }
