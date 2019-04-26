@@ -1,6 +1,12 @@
 // http://ionicframework.com/docs/theming/
 
+ion-loading.transparent {
+  .loading-wrapper {
+    background: transparent;
+    box-shadow: none;
 
+  }
+}
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These

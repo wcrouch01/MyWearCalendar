@@ -4,7 +4,8 @@
 
     </ion-card-content>
     <ion-card-header>
-      <ion-icon name="refresh" class="refresh" id="ricon" (click)='ionViewDidEnter()'></ion-icon>
+      <ion-icon *ngIf="!this.platform.is('ios')" name="refresh" class="refresh" id="ricon" (click)='ionViewDidEnter()'></ion-icon>
+      <ion-icon *ngIf="this.platform.is('ios')" name="refresh" class="refreshIOS" id="ricon" (click)='ionViewDidEnter()'></ion-icon>
 
       <div class="tempL">
         Current/High
@@ -12,12 +13,19 @@
       <div class="temp">
         {{weatherLocal}}/{{temperature}}
       </div>
-      <div class="outside">
+      <div *ngIf="this.platform.is('ios')" class="outsideIOS">
         Time outside: {{totalTime}} minutes
       </div>
-      <div class="wearStr" text-wrap>
+      <div *ngIf="this.platform.is('ios')" class="wearStrIOS" text-wrap>
         {{level}}
       </div>
+      <div *ngIf="!this.platform.is('ios')" class="outside">
+        Time outside: {{totalTime}} minutes
+      </div>
+      <div *ngIf="!this.platform.is('ios')" class="wearStr" text-wrap>
+        {{level}}
+      </div>
+
       <div [ngStyle]="{ 'background-image' : graphic}" class="gif"></div>
       <div [ngStyle]="{ 'background-image' : outfit}" style="height: 300px;width: auto;padding-left: 15px;background-repeat: no-repeat;background-size:contain;" ></div>
     </ion-card-header>

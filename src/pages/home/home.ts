@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController,  NavParams, AlertController } from 'ionic-angular';
+import { NavController,  NavParams, AlertController, LoadingController} from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClient } from '@angular/common/http';
 import { Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { SettingsSetPage } from '../settings-set/settings-set';
 import { FeedbackPage } from '../feedback/feedback';
 import { MyglobalsProvider } from '../../providers/myglobals/myglobals';
 import { NativeGeocoder, NativeGeocoderForwardResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
@@ -43,10 +42,11 @@ export class HomePage {
   lastOpenStr: any;
   lastOpenLevel:number;
   totalTime:number;
+  loading: any;
   days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
   constructor(public navCtrl: NavController, private geolocation: Geolocation, private http: HttpClient,
-    private platform: Platform, public navParams: NavParams, private storage: Storage,
+    private platform: Platform, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController,
     public global: MyglobalsProvider, private nativeGeocoder: NativeGeocoder, public alertController: AlertController) {
       this.dropdown = false;
       this.gradient = "linear-gradient(#fffba4,#019dc5)";
@@ -58,10 +58,9 @@ export class HomePage {
 
       //if you havent opened the app yet
       if ( val == null) {
-        this.navCtrl.push(SettingsSetPage);
+
       }
     });
-
 
     //this.storage.get('color').then((val) => {
     //this.color = val;
@@ -75,10 +74,35 @@ export class HomePage {
   }
 
 
+    presentLoadingCustom() {
+      this.loading = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: `
+          <div class="custom-spinner-container">
+            <div class="custom-spinner-box">
+               <img src="assets/icon/loading.gif" />
+            </div>
+          </div>`,
+        duration: 3000,
+        cssClass: 'my-loading-class'
+      });
+
+      this.loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+
+      this.loading.present();
+    }
+
+    dismissLoading(){
+        if(this.loading){
+            this.loading.dismiss();
+            this.loading = null;
+          }
+      }
+
  ionViewWillEnter() {
-//   if (this.color == null) {
-//     this.color = this.navParams.get('thing1')|| null;
-//   }
+  console.log("ionViewWillEnter");
  }
 
   setOutfit(val){
@@ -107,16 +131,19 @@ export class HomePage {
       }
       }
       console.log(this.outfit);
+      this.dismissLoading();
   }
 
   ionViewDidEnter(){
+
+    this.presentLoadingCustom();
 
     this.storage.get('color').then((val) => {
     this.global.color = val;
     if (val == null) {
       this.global.color = this.navParams.get('thing1')|| null;
     }
-    console.log('Your character is ' + val + " and the gender " + this.gender);
+    console.log('Your character is ' + val + " and the gender " + this.gender + " global : " + this.global.color);
     this.setOutfit(this.global.color);
     });
 
@@ -213,7 +240,7 @@ export class HomePage {
 
   setNewLocation(){
     //console.log("Set New Location", this.newLoc);
-
+    this.presentLoadingCustom();
     let options: NativeGeocoderOptions = {
       useLocale: true,
       maxResults: 5

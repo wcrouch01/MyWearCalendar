@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsSetPage } from '../pages/settings-set/settings-set';
 import { CalendarSetPage } from '../pages/calendar-set/calendar-set';
+import { Slide } from '../pages/slide';
 import { FeedbackPage } from '../pages/feedback/feedback';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -32,7 +33,8 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
     TabsPage,
     SettingsSetPage,
     CalendarSetPage,
-    FeedbackPage
+    FeedbackPage,
+    Slide
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,8 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
     TabsPage,
     SettingsSetPage,
     CalendarSetPage,
-    FeedbackPage
+    FeedbackPage,
+    Slide
   ],
   providers: [
     StatusBar,

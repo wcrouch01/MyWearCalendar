@@ -10,6 +10,7 @@
     </ion-item>
   </ion-list>
 
+<ion-list>
   <ion-list-header>Character</ion-list-header>
   <div [ngStyle]="{'background-image': color}" class="color"></div>
 
@@ -17,13 +18,16 @@
   <ion-item>
     {{notifications}}
   </ion-item>
+</ion-list>
 
+<ion-list>
   <ion-list-header>Temperature Cutoffs</ion-list-header>
   <ion-item>
       Cold temperature cutoff (degrees): {{tempCold}}
       <br/><br/>
       Warm temperature cutoff (degrees): {{tempWarm}}
   </ion-item>
+</ion-list>
 
 <button style="margin: 20px" ion-button color="primary" (click)="update()">Update</button>
 <button style="margin: 20px; margin-left:0px;" ion-button color="secondary" (click)="clearCache()">Clear Cache</button>
