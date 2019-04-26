@@ -41,8 +41,8 @@ export class ContactPage {
   }
 
   ionViewDidEnter() {
-    this.tempCold = this.global.toleranceCold*39;
-    this.tempWarm = this.global.toleranceWarm*61;
+    this.tempCold = this.roundNumber(this.global.toleranceCold*39, 2);
+    this.tempWarm = this.roundNumber(this.global.toleranceWarm*61, 2);
 
     if (this.pushPage == true) {
       console.log("In the pushPage==true");
@@ -52,6 +52,12 @@ export class ContactPage {
         console.log(this.color);
         this.pushPage = false;
     }
+  }
+
+  // Arguments: number to round, number of decimal places
+  roundNumber(rnum, rlength) { 
+    var newnumber = Math.round(rnum * Math.pow(10, rlength)) / Math.pow(10, rlength);
+    return newnumber;
   }
 
   update(){
