@@ -31,6 +31,7 @@ export class HomePage {
   temperature: any;
   graphic: any;
   shortForecast: any;
+  shortForecastSplit: any;
   //color: any;
   notifications: any;
   gradient:any;
@@ -249,27 +250,59 @@ export class HomePage {
         ////console.log("apiCall2" , response.properties.periods[0]);
          this.temperature = Math.max(response.properties.periods[0].temperature, response.properties.periods[1].temperature);
          ////console.log(response.properties.periods);
-         this.shortForecast = response.properties.periods[0].shortForecast;
 
-          if (this.shortForecast.includes("Thunder") || this.shortForecast.includes("thunder")) {
-           this.graphic = "url('../../assets/icon/thunder.svg')";
-           this.gradient = "linear-gradient(#76787b,#007bcb, #002856)";
-           this.gradientEnd = "#002856";
+         //split on 'then'
+         this.shortForecast = response.properties.periods[0].shortForecast;
+         this.shortForecastSplit = response.properties.periods[0].shortForecast.split('then')[0].trim();
+
+          if (this.shortForecastSplit.includes("Thunderstorms") || this.shortForecastSplit.includes("T-storms")) {
+            this.graphic = "url('../../assets/icon/thunder.svg')";
+            this.gradient = "linear-gradient(#76787b,#007bcb, #002856)";
+            this.gradientEnd = "#002856";
+
            //document.getElementsByName("refresh")[0].style.color = "FFA500";
-         }else if (this.shortForecast.includes("Snow") || this.shortForecast.includes("snow")) {
-             this.graphic = "url('../../assets/icon/snowy-1.svg')";
-             this.gradient = "linear-gradient(#949598,#0060b5)";
-             this.gradientEnd = "#0060b5";
-         }else if (this.shortForecast.includes("Rain") || this.shortForecast.includes("rain")) {
-             this.graphic = "url('../../assets/icon/rainy-1.svg')";
-             this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
-             this.gradientEnd = "#007aac";
-         }else if (this.shortForecast.includes("Cloud") || this.shortForecast.includes("cloud")) {
+         }else if (this.shortForecastSplit.includes("Snow")) {
+            this.graphic = "url('../../assets/icon/snowy-5.svg')";
+            this.gradient = "linear-gradient(#949598,#0060b5)";
+            this.gradientEnd = "#0060b5";
+
+         }else if (this.shortForecastSplit.includes("Sleet")) {
+            this.graphic = "url('../../assets/icon/rainy-7.svg')";
+            this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+            this.gradientEnd = "#007aac";
+
+         }else if (this.shortForecastSplit.includes("Rain")) {
+            this.graphic = "url('../../assets/icon/rainy-3.svg')";
+            this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+            this.gradientEnd = "#007aac";
+
+         }else if (this.shortForecastSplit.includes("Fog")) {
+            this.graphic = "url('../../assets/icon/cloudy.svg')";
+            this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+            this.gradientEnd = "#007aac";
+
+          }else if (this.shortForecastSplit.includes("Mostly Cloudy")) {
+            this.graphic = "url('../../assets/icon/cloudy-day-3.svg')";
+            this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+            this.gradientEnd = "#007aac";
+
+         }else if (this.shortForecastSplit.includes("Cloudy")) {
            this.graphic = "url('../../assets/icon/cloudy.svg')";
            this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
            this.gradientEnd = "#007aac";
+
+          }else if (this.shortForecastSplit.includes("Sunny")) {
+            this.graphic = "url('../../assets/icon/day.svg')";
+            this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+            this.gradientEnd = "#007aac";
+
+          }else if (this.shortForecastSplit.includes("Clear")) {
+            this.graphic = "url('../../assets/icon/day.svg')";
+            this.gradient = "linear-gradient(#aea99d,#efdf92,#007aac)";
+            this.gradientEnd = "#007aac";
+
          }else{
-           this.graphic = "url('../../assets/icon/cloudy-day-1.svg')";
+           this.graphic = "url('../../assets/icon/cloudy-day-3.svg')";
            this.gradient = "linear-gradient(#fffba4,#019dc5)";
            this.gradientEnd = "#019dc5";
          }
