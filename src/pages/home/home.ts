@@ -365,7 +365,7 @@ export class HomePage {
     //get level of wear
     var lol = "unknown";
     if (this.lastOpenLevel == 0){
-      lol = "coat";
+      lol = "a coat";
     }else if (this.lastOpenLevel == 1){
       lol = "pants and light jacket";
     }else if (this.lastOpenLevel == 2){
