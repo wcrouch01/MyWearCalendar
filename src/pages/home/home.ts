@@ -35,7 +35,6 @@ export class HomePage {
   notifications: any;
   gradient:any;
   gradientEnd:any;
-  outfit: string;
   dropdown: boolean;
   newLoc: string;
   lastOpen: any;
@@ -108,29 +107,29 @@ export class HomePage {
   setOutfit(val){
     if (this.levelInt == 0){
       if (this.gender == 2) { //women outfit
-          this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=944137&head_rotation=0&body_rotation=0&width=400')"
+          this.global.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=944137&head_rotation=0&body_rotation=0&width=400')"
       }
       else{
-          this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=400')"
+          this.global.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=1018031&head_rotation=0&body_rotation=0&width=400')"
       }
     }
     else if (this.levelInt == 1){
       if (this.gender == 2) {
-          this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=957114&head_rotation=0&body_rotation=0&width=400')"
+          this.global.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=957114&head_rotation=0&body_rotation=0&width=400')"
       }
       else{
-          this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=962366&head_rotation=0&body_rotation=0&width=400')"
+          this.global.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=962366&head_rotation=0&body_rotation=0&width=400')"
       }
     }
     else{ //this.levelInt = 2;
       if (this.gender == 2) {
-          this.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=889503&head_rotation=0&body_rotation=0&width=400')"
+          this.global.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=889503&head_rotation=0&body_rotation=0&width=400')"
       }
       else{
-          this.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=1017606&head_rotation=0&body_rotation=0&width=400')"
+          this.global.outfit = "url('https://render.bitstrips.com/render/10215854/" + val + "-v3.png?cropped=%22body%22&outfit=1017606&head_rotation=0&body_rotation=0&width=400')"
       }
       }
-      console.log(this.outfit);
+      console.log(this.global.outfit);
       this.dismissLoading();
   }
 

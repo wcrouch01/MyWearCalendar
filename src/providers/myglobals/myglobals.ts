@@ -19,6 +19,7 @@ export class MyglobalsProvider {
     public toleranceCold: number;
     public toleranceWarm: number;
     public color: any;
+    public outfit: any;
 
   constructor(public http: HttpClient, private calendar: Calendar, private platform: Platform, private storage: Storage) {
     console.log('Hello MyglobalsProvider Provider');
