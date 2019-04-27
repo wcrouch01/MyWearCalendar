@@ -12,13 +12,13 @@
 
 <ion-content padding>
 
-  <ion-card>
-    <ion-card-header text-wrap>
-      <div *ngIf="lastOpenLevel!=='unknown'"> 
+  <div *ngIf="lastOpenLevelStr!=='unknown'"> 
+    <ion-card>
+      <ion-card-header text-wrap>
         <ion-card-title>{{losCap}} we suggested you wear {{lastOpenLevelStr}}.</ion-card-title>
-      </div>
-    </ion-card-header>
-  </ion-card>
+      </ion-card-header>
+    </ion-card>
+  </div>
 
   <ion-card>
   <ion-card-header text-wrap>

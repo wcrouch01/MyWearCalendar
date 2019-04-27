@@ -345,6 +345,14 @@ export class HomePage {
 
     var now = new Date();
     ////console.log(this.lastOpen);
+
+    //avoid error if this is undefined
+    if (this.lastOpen === undefined){
+      this.saveCurrentOpen();
+      this.lastOpen = now;
+      this.lastOpenLevel = this.levelInt;
+    }
+
     this.lastOpenStr = this.days[ this.lastOpen.getDay() ];
 
     //get last open string
