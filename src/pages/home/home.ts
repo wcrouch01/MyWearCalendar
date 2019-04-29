@@ -172,6 +172,10 @@ export class HomePage {
 			}).catch((error) => {
 				//console.log("Error getting location Code: " + error.code + ", Message: " + error.message);
 			});
+
+      //load events provider
+      this.global.loadAll();
+      
 		});
 
     //https://ionicframework.com/docs/v3/native/native-geocoder/ can be used to translate a string city to coordinates.
@@ -180,8 +184,7 @@ export class HomePage {
     //to get weather conditions use the api call https://api.weather.gov/points/"+resp.coords.latitude+","+resp.coords.longitude+"/forecast
     //the response in periods[0].shortForecast we will get a string of weather conditions that should be used to determine graphic.
 
-    //load events provider
-    this.global.loadAll();
+
 
     //ask for feedback if we have opened the app earlier and haven't given feedback
     this.storage.get("lastOpen").then((val) => {

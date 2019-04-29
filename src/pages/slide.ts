@@ -6,8 +6,8 @@ import { NavController } from 'ionic-angular';
   template: `
     <ion-slides style="background:white;" pager="true">
       <ion-slide>
-        <h1>Welcome to Wear Calendar</h1>
-        <h5> Logo </h5>
+        <h1>Welcome to Wear Where</h1>
+        <img style="height:200px;width:auto;" src="../../resources/icon.png">
         <p style="max-width: 350px; padding: 10px; margin: auto;"> We are here to help you make an educated decision on what to wear. </p>
       </ion-slide>
       <ion-slide>
@@ -27,7 +27,7 @@ import { NavController } from 'ionic-angular';
         <p style="max-width: 350px; padding: 10px; margin: auto;"> More feedback means a more accurate prediction!</p>
       </ion-slide>
       <ion-slide>
-        <h1>Continue to Wear Calendar</h1>
+        <h1>Continue to Wear Where</h1>
         <button ion-button (click)="popIt()"> Continue </button>
       </ion-slide>
     </ion-slides>
