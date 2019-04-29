@@ -24,6 +24,7 @@ export class MyglobalsProvider {
   constructor(public http: HttpClient, private calendar: Calendar, private platform: Platform, private storage: Storage) {
     console.log('Hello MyglobalsProvider Provider');
     this.isRun = false;
+    this.outfit = "";
   }
 
   //load everything possible (only once unless the submethods are explicitly called)
@@ -94,9 +95,9 @@ export class MyglobalsProvider {
   //load 'transportation' and 'time' from the local storage if it exists
   loadTransportation(){
 
-    
+
     for(let i=0; i<this.events.length; i++){
-      //console.log(this.global.events[i]); 
+      //console.log(this.global.events[i]);
 
       //console.log("Trying to find: "+this.events[i].title.replace(/\s/g, "")+"~"+this.events[i+1].title.replace(/\s/g, ""));
 

@@ -7,10 +7,16 @@
       <ion-icon *ngIf="!this.platform.is('ios')" name="refresh" class="refresh" id="ricon" (click)='ionViewDidEnter()'></ion-icon>
       <ion-icon *ngIf="this.platform.is('ios')" name="refresh" class="refreshIOS" id="ricon" (click)='ionViewDidEnter()'></ion-icon>
 
-      <div class="tempL">
+      <div *ngIf="this.platform.is('ios')" class="tempLIOS">
         Current/High
       </div>
-      <div class="temp">
+      <div *ngIf="this.platform.is('ios')" class="tempIOS">
+        {{weatherLocal}}/{{temperature}}
+      </div>
+      <div *ngIf="!this.platform.is('ios')" class="tempL">
+        Current/High
+      </div>
+      <div *ngIf="!this.platform.is('ios')" class="temp">
         {{weatherLocal}}/{{temperature}}
       </div>
       <div *ngIf="this.platform.is('ios')" class="outsideIOS">

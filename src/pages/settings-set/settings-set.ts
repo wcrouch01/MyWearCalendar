@@ -26,6 +26,7 @@ export class SettingsSetPage {
 
   constructor(public navCtrl: NavController, private storage: Storage, private navParams: NavParams,
     public global: MyglobalsProvider) {
+    this.global.loadAll();
     this.notifications = navParams.get('notifications');
     this.gender = navParams.get('gender');
     this.color = navParams.get('color');
@@ -79,14 +80,16 @@ submit(){
       console.log("this is this.resp2 resp ", this.resp);
     }).catch(err => console.log("this err: ",err.message));
 */
-           this.storage.set('gender', this.gender);
-           this.storage.set('color', this.color);
-           this.storage.set('notifications', this.notifications);
-            this.navCtrl.getPrevious().data.thing1 = this.color;
-            this.navCtrl.getPrevious().data.gender = this.gender;
-            this.navCtrl.getPrevious().data.notifications = this.notifications;
+          this.storage.set('gender', this.gender);
+          this.storage.set('color', this.color);
+          this.storage.set('notifications', this.notifications);
+          this.navCtrl.getPrevious().data.thing1 = this.color;
+          this.navCtrl.getPrevious().data.gender = this.gender;
+          this.navCtrl.getPrevious().data.notifications = this.notifications;
+          //this.navCtrl.setRoot(this.navCtrl.getActive().component);
+          this.global.color = this.color;
            this.navCtrl.pop();
-           this.global.color = this.color;
+           //this.global.color = this.color;
 }
 
 
