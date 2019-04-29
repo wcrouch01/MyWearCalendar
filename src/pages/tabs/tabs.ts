@@ -23,7 +23,7 @@ export class TabsPage {
          console.log("ionViewWillEnter",this.global.outfit);
          console.log(this.global.color);
          if (!this.global.outfit.includes(this.global.color)) {
-          this.navCtrl.getActiveChildNavs();
+          this.navCtrl.getActiveChildNavs;
            this.global.outfit = this.global.outfit.replace("null", this.global.color);
             //  this.navCtrl.setRoot(this.navCtrl.getActive().component);
          }
