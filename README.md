@@ -21,9 +21,13 @@ Test for IOS device:
   
     ionic cordova build ios
   
-    open project in Xcode
+    open project in Xcode (~/<repo>/platforms/ios select MyApp.xcodeproj)
   
-    select emulator
+    select emulator *some features dont work on emulator* To test all features build on physical device
+    
+      to build on physical device, plugin Iphone to computer
+      
+      select iphone in the upper left dropdown (might say Generic iOS Device or some other emulator)
   
-    build project
+    build project (play button)
   
