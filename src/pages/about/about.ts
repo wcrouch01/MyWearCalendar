@@ -18,7 +18,9 @@ export class AboutPage {
   constructor(public navCtrl: NavController, private calendar: Calendar, private platform: Platform,
     public global: MyglobalsProvider, private storage: Storage) {
       this.IOSevent = true;
-
+      //load events if they don't exist yet
+      this.global.loadAll();
+      
       //get global events
       this.events = this.global.events;
       for (let i = 0; i < this.events.length; i++) {
@@ -29,8 +31,7 @@ export class AboutPage {
   ionViewDidEnter(){
     console.log('ionViewDidLoad CalendarPage');
 
-    //load events if they don't exist yet
-    this.global.loadAll();
+
   }
 
 

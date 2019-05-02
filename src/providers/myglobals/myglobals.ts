@@ -20,11 +20,13 @@ export class MyglobalsProvider {
     public toleranceWarm: number;
     public color: any;
     public outfit: any;
+    public gender: any;
 
   constructor(public http: HttpClient, private calendar: Calendar, private platform: Platform, private storage: Storage) {
     console.log('Hello MyglobalsProvider Provider');
     this.isRun = false;
     this.outfit = "";
+    this.gender = null;
   }
 
   //load everything possible (only once unless the submethods are explicitly called)

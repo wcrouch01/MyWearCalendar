@@ -53,7 +53,7 @@ export class HomePage {
 
     this.storage.get('gender').then((val) => {
       //console.log('Your gender is', val);
-      this.gender = val;
+      this.global.gender = val;
 
       //if you havent opened the app yet
       if ( val == null) {
@@ -102,11 +102,15 @@ export class HomePage {
 
  ionViewWillEnter() {
   console.log("ionViewWillEnter");
+  //load events provider
+  this.global.loadAll();
+
  }
 
   setOutfit(val){
+    console.log("this is the gender: ", this.global.gender);
     if (this.levelInt == 0){
-      if (this.gender == 2) { //women outfit
+      if (this.global.gender == 2) { //women outfit
           this.global.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=944137&head_rotation=0&body_rotation=0&width=400')"
       }
       else{
@@ -114,7 +118,7 @@ export class HomePage {
       }
     }
     else if (this.levelInt == 1){
-      if (this.gender == 2) {
+      if (this.global.gender == 2) {
           this.global.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=957114&head_rotation=0&body_rotation=0&width=400')"
       }
       else{
@@ -122,7 +126,7 @@ export class HomePage {
       }
     }
     else{ //this.levelInt = 2;
-      if (this.gender == 2) {
+      if (this.global.gender == 2) {
           this.global.outfit = "url('https://render.bitstrips.com/render/10215854/"+ val +"-v1.png?cropped=%22body%22&outfit=889503&head_rotation=0&body_rotation=0&width=400')"
       }
       else{
@@ -142,16 +146,17 @@ export class HomePage {
     if (val == null) {
       this.global.color = this.navParams.get('thing1')|| null;
     }
-    console.log('Your character is ' + val + " and the gender " + this.gender + " global : " + this.global.color);
+    console.log('Your character is ' + val + " and the gender " + this.global.gender + " global : " + this.global.color);
     this.setOutfit(this.global.color);
     });
 
     this.storage.get('gender').then((val) => {
       //console.log('Your gender is', val);
-      this.gender = val;
-      if (val == null) {
-        this.gender = this.navParams.get('gender')|| null;
-      }
+      this.global.gender = val;
+    //  if (val == null) {
+    //    this.global.gender = this.navParams.get('gender')|| null;
+    //    this.setOutfit(this.global.color);
+    //  }
     });
 
 
@@ -172,10 +177,6 @@ export class HomePage {
 			}).catch((error) => {
 				//console.log("Error getting location Code: " + error.code + ", Message: " + error.message);
 			});
-
-      //load events provider
-      this.global.loadAll();
-      
 		});
 
     //https://ionicframework.com/docs/v3/native/native-geocoder/ can be used to translate a string city to coordinates.

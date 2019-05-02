@@ -7,6 +7,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsSetPage } from '../pages/settings-set/settings-set';
 import { Storage } from '@ionic/storage';
 import { Slide } from '../pages/slide';
+import { MyglobalsProvider } from '../providers/myglobals/myglobals';
 
 declare var snap;
 
@@ -18,9 +19,11 @@ export class MyApp {
   rootPage:any = TabsPage;
 
 
-  constructor( platform: Platform, private storage: Storage, statusBar: StatusBar, splashScreen: SplashScreen, private deeplinks: Deeplinks) {
+  constructor( platform: Platform, private storage: Storage, statusBar: StatusBar, splashScreen: SplashScreen,
+    private deeplinks: Deeplinks, public global: MyglobalsProvider) {
 
     platform.ready().then(() => {
+
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();

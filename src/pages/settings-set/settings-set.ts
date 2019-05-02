@@ -88,6 +88,7 @@ submit(){
           this.navCtrl.getPrevious().data.notifications = this.notifications;
           //this.navCtrl.setRoot(this.navCtrl.getActive().component);
           this.global.color = this.color;
+          this.global.gender = this.gender;
            this.navCtrl.pop();
            //this.global.color = this.color;
 }

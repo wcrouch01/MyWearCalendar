@@ -7,7 +7,7 @@ import { NavController } from 'ionic-angular';
     <ion-slides style="background:white;" pager="true">
       <ion-slide>
         <h1>Welcome to Wear Where</h1>
-        <img style="height:200px;width:auto;" src="../../resources/icon.png">
+        <img style="height:200px;width:auto; border-radius: 20%;" src="../assets/icon/icon.png">
         <p style="max-width: 350px; padding: 10px; margin: auto;"> We are here to help you make an educated decision on what to wear. </p>
       </ion-slide>
       <ion-slide>
